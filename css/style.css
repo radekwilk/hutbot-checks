@@ -1,0 +1,258 @@
+
+/* GENERAL SETTINGS */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+background: rgb(236,235,235);
+background: linear-gradient(90deg, rgb(235, 233, 233) 0%, rgb(229, 231, 231) 100%);
+font-family: 'Roboto', sans-serif;
+}
+/* END OF GENERAL SETTINGS */
+
+/* HEADER */
+
+.header {
+  width: 90%;
+  margin: 5rem auto 4rem auto;
+}
+
+/* HEADINGS */
+
+.heading {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 3rem;
+}
+
+.heading--1 {
+  font-size: 5rem;
+}
+
+.heading--2 {
+  font-size: 4rem;
+}
+
+.heading--3 {
+  font-size: 3.2rem;
+  font-weight: 300;
+}
+
+
+/* INPUT WRAPPER AND INPUT FILE STYLING */
+.input-wrapper {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  height: 8rem;
+  align-items: center;
+  font-size: 2.2rem;
+  border: 2px solid rgba(227, 42, 51, 0.6);
+  border-radius: .5rem;
+  background-color: #fff;
+}
+
+
+/* Styling of input type="file"  */
+.input-field::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.input-field::before {
+  content: 'Select excel file';
+  height: 4rem;
+  display: inline-block;
+  background-color: rgba(227, 42, 51, 0.9);
+  color: #fff;
+  border: 1px solid rgba(227, 42, 51, 1);
+  border-radius: .3rem;
+  padding: 1.5rem 1rem .5rem 1rem;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 300;
+  font-size: 2.5rem;
+}
+.input-field:hover::before {
+  border-color: black;
+}
+.input-field:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+.input-field {
+  width: 90%;
+  font-size: 3rem;
+}
+
+.icon {
+  font-size: 3.6rem;
+  color: rgba(227, 42, 51, 0.9);
+  margin-right: 2rem;
+}
+
+/* SECTIONS STYLING */
+.section {
+  width: 90%;
+  margin: 5rem auto 5rem 0;
+  padding: 3rem 5rem;
+}
+
+/* select-wrapper */
+.select-wrapper {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+/* content-sction */
+.content-section {
+  width: 75%;
+}
+
+/* Styling of SELECT  */
+select {
+
+  /* styling */
+  background-color: white;
+  border: thin solid;
+  border-radius: 4px;
+  display: block;
+  font: inherit;
+  line-height: 1.5em;
+  padding: 0.5em 3.5em 0.5em 1em;
+
+  /* reset */
+
+  margin: 0;      
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.taskSelections {
+  width: 45%;
+  margin: 0 auto;
+  font-size: 3.2rem;
+  font-weight: 300;
+  padding: 0.8rem 1.2rem;
+  display: inline-block;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #ff0033 50%),
+    linear-gradient(135deg, #ff0033 50%, transparent 50%),
+    linear-gradient(to right, #ffc2ce, #ffc2ce);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    100% 0;
+  background-size:
+    5px 5px,
+    5px 5px,
+    2.5em 2.5em;
+  background-repeat: no-repeat;
+}
+
+.taskSelections:focus {
+  background-image:
+    linear-gradient(45deg, white 50%, transparent 50%),
+    linear-gradient(135deg, transparent 50%, white 50%),
+    linear-gradient(to right, #ff0033, #ff0033);
+  background-position:
+    calc(100% - 15px) 1em,
+    calc(100% - 20px) 1em,
+    100% 0;
+  background-size:
+    5px 5px,
+    5px 5px,
+    2.5em 2.5em;
+  background-repeat: no-repeat;
+  border-color: #ff0033;
+  outline: 0;
+}
+
+/* Styling of the button */
+.btn {
+  display: inline-block;
+  width: 27rem;
+  background-color: #ff0033;
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: .2rem;
+  text-shadow: .1rem .1rem .5rem rgba(0,0,0, 0.3);
+  border: none;
+  border-radius: .5rem;
+  padding: 0.8rem 1.2rem;
+}
+
+/* Styling of error message */
+.error-msg {
+  width: 100%;
+  text-align: center;
+  padding: 1.2rem 1.5rem;
+  background-color: #ffc2ce;
+  color: #ff0033;
+  font-size: 2.5rem;
+  border: 1px solid rgba(255, 0, 51, 0.6);
+  border-radius: .5rem;
+  margin: 3rem 0;
+  display: none;
+  transition: display 0.5s;
+}
+
+
+/* Styling of answers lists */
+.answers-list li {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  font-size: 1.8rem;
+  list-style: none;
+  border-bottom: 1px solid rgba(227, 42, 51, 0.6);
+  margin-bottom: 1.5rem;
+  padding-bottom: .5rem;
+}
+
+/* Styling of missed tasks % count */
+.missed-tasks-section {
+  width: 100%;
+  display: none;
+  justify-content: center;
+  margin-bottom: 4rem;
+  padding: 1.6rem;
+}
+
+.missed-items {
+  font-size: 1.6rem;
+  padding: 1.5rem 2.5rem;
+  /* width: 5rem; */
+  border: 1px solid #f9f9f9;
+  border-radius: .3rem;
+  margin-right: 1.5rem;
+}
+
+.red-section {
+  background-color: #ffc2ce;
+  border: 1px solid #ff0033;
+}
+
+.green-section {
+  background-color: #63dd9c;
+  border: 1px solid #097a3e;
+}
+
+.incorrect-value {
+  background-color: #ffc2ce;
+  border-bottom: 1px solid #ff0033;
+  color: #ff0033;
+}

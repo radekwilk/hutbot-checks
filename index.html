@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Excel File</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Page heading -->
+    <header class="header">
+
+        <h1 class="heading heading--1">Upload excel file</h1>
+
+    </header>
+
+    <!-- Select file field -->
+    <div class="input-wrapper">
+        <i class="fa-regular fa-folder-open icon"></i>
+        <input type="file" name="file" class="input-field" id="file" accept=".xls, .xlsx, .csv">
+        
+    </div>
+   
+   <!-- Section where user is selecting completed task or question -->
+    <section class="section select-section">
+        <h3 class="heading heading--3">Select question or task completed in Hutbot</h3>
+        
+        <div class="select-wrapper">
+            <select name="selectTask" id="questions" class="taskSelections">
+                <option value="null">Select task or question</option>
+                <option value="q1">Hot water temp check</option>
+                <option value="q2">Temp of the walk-in Freezer</option>
+                <option value="q3">Temp of the walk-in fridge</option>
+                <option value="q4">Fire safety test</option>
+                <option value="q5">Records of hut visitors</option>
+                <option value="Food Safety">Food safety checks</option>
+                <option value="Temperature">Temperatures checks</option>
+                <option value="Pest Walk">Pest walk</option>
+                <option value="Daily Oven Check">Oven Checks</option>
+                <option value="Cleaning">Cleaning</option>
+                
+            </select>
+        
+            <button class="btn">Get info</button>
+            
+        </div>
+        <p class="error-msg">Please select excel file first</p>
+    </section>
+
+    <section class="section content-section">
+        <h2 class="heading heading--2">List of the answers</h2>
+
+        <!-- Calculation of missed tasks section -->
+        <div class="missed-tasks-section">
+            <span id="count-total" class="missed-items"></span>
+            <span id="count-missed" class="missed-items"></span>
+            <span id="missed-percent" class="missed-items"></span>
+        </div>
+        <ul class="answers-list">
+
+        </ul>
+
+    </section>
+
+    
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/xlsx.full.js"></script>
+    <!-- <script src="js/script.js"></script> -->
+    <script src="js/refactored-script.js"></script>
+</body>
+</html>
