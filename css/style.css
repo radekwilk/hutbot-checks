@@ -11,7 +11,6 @@ html {
 }
 
 body {
-background: rgb(236,235,235);
 background: linear-gradient(90deg, rgb(235, 233, 233) 0%, rgb(229, 231, 231) 100%);
 font-family: 'Roboto', sans-serif;
 }
@@ -21,7 +20,7 @@ font-family: 'Roboto', sans-serif;
 
 .header {
   width: 90%;
-  margin: 5rem auto 4rem auto;
+  margin: 4rem auto 3rem auto;
 }
 
 /* HEADINGS */
@@ -33,15 +32,15 @@ font-family: 'Roboto', sans-serif;
 }
 
 .heading--1 {
-  font-size: 5rem;
+  font-size: 4.5rem;
 }
 
 .heading--2 {
-  font-size: 4rem;
+  font-size: 3.5rem;
 }
 
 .heading--3 {
-  font-size: 3.2rem;
+  font-size: 2.8rem;
   font-weight: 300;
 }
 
@@ -54,7 +53,7 @@ font-family: 'Roboto', sans-serif;
   justify-content: center;
   height: 8rem;
   align-items: center;
-  font-size: 2.2rem;
+  font-size: 2rem;
   border: 2px solid rgba(227, 42, 51, 0.6);
   border-radius: .5rem;
   background-color: #fff;
@@ -78,7 +77,7 @@ font-family: 'Roboto', sans-serif;
   white-space: nowrap;
   cursor: pointer;
   font-weight: 300;
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 .input-field:hover::before {
   border-color: black;
@@ -89,11 +88,11 @@ font-family: 'Roboto', sans-serif;
 
 .input-field {
   width: 90%;
-  font-size: 3rem;
+  font-size: 2.2rem;
 }
 
 .icon {
-  font-size: 3.6rem;
+  font-size: 2.8rem;
   color: rgba(227, 42, 51, 0.9);
   margin-right: 2rem;
 }
@@ -101,22 +100,17 @@ font-family: 'Roboto', sans-serif;
 /* SECTIONS STYLING */
 .section {
   width: 90%;
-  margin: 5rem auto 5rem 0;
-  padding: 3rem 5rem;
-}
-
-/* select-wrapper */
-.select-wrapper {
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-around;
+  margin: 3rem auto;
+  padding: 2rem 3rem;
 }
 
 /* content-sction */
 .content-section {
   width: 75%;
 }
+
+
+
 
 /* Styling of SELECT  */
 select {
@@ -140,9 +134,17 @@ select {
   -moz-appearance: none;
 }
 
+/* select-wrapper */
+.select-wrapper {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
 .taskSelections {
   width: 45%;
-  margin: 0 auto;
+  margin-right: 2.5rem;
   font-size: 3.2rem;
   font-weight: 300;
   padding: 0.8rem 1.2rem;
@@ -232,6 +234,8 @@ select {
   padding: 1.6rem;
 }
 
+/* STYLING OF INFO DISPLAY */
+/* Styling of missed items - section styling  */
 .missed-items {
   font-size: 1.6rem;
   padding: 1.5rem 2.5rem;
@@ -241,18 +245,46 @@ select {
   margin-right: 1.5rem;
 }
 
+/* Styling of missed section - when over the limit (red) */
 .red-section {
   background-color: #ffc2ce;
   border: 1px solid #ff0033;
 }
 
+/* Styling of missed section - when below the limit (green) */
 .green-section {
   background-color: #63dd9c;
   border: 1px solid #097a3e;
 }
 
+/* Styling of <li> in the questions list - when entered value is incorrect */
 .incorrect-value {
   background-color: #ffc2ce;
   border-bottom: 1px solid #ff0033;
   color: #ff0033;
+}
+
+/* Styling of Store details info display */
+.store-details {
+  width: 40%;
+  margin: 2.5rem auto;
+  position: relative;
+  padding: 1.2rem 2.5rem;
+  font-size: 2.4rem;
+  border: 1px solid #ffc2ce;
+  border-radius: .5rem;
+  text-align: center;
+}
+
+.store-details::before {
+  content: 'Store details';
+  font-size: 1.2rem;
+  color: rgba(51, 51, 51, 0.6);
+  padding: .2rem .6rem;
+  position: absolute;
+  background-color: rgb(235, 233, 233);
+  top: -.8rem;
+  left: 2rem;
+  z-index: 10;
+  letter-spacing: .1rem;
 }

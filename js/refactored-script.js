@@ -10,8 +10,15 @@ $(document).ready(function() {
     const countMissed = document.getElementById('count-missed')
     const calcMissedPercent = document.getElementById('missed-percent')
     const missedSection = document.querySelector('.missed-tasks-section')
+    const storeDetails = document.querySelector('.store-details')
 
     const missingTreshold = 10; // variable to hold a treshold for allowed % of missing tasks
+
+    // store details :
+    const storeDetailsObj = {
+        storeName: '',
+        storeNumber: ''
+    }
 
     // this variable is to store VALUE of the limit for given task
     let enteredValueLimit;
@@ -138,8 +145,10 @@ $(document).ready(function() {
                         let json_object = JSON.stringify(XL_row_object)
     
                         myData = JSON.parse(json_object)
-    
+                        storeDetailsObj.storeName = myData[0]['Store Name']
+                        storeDetailsObj.storeNumber = myData[0]['Local Store Number']
                         console.log(myData)
+                        displayStoreDetails(storeDetailsObj.storeName, storeDetailsObj.storeNumber)
                     } else {
                         // if something goes wrong, we will display this message
                         displayError(errorDisplay, errorsMsg.missingTabs)
@@ -343,6 +352,11 @@ $(document).ready(function() {
         } else {
             return 'correct'
         }
+    }
+
+    // function to display store details
+    const displayStoreDetails = (hutName, hutNumber) => {
+        storeDetails.innerText = `${hutName} - ${hutNumber}`
     }
 
 });
