@@ -292,3 +292,27 @@ select {
 .store-details--muted {
   color: rgba(51, 51, 51, 0.3);
 }
+
+/* FOOTER STYLING */
+.footer {
+  width: 100%;
+  height: 6.5rem;
+  background-color: rgba(68,68,68, 0.6);
+  color: #fff;
+}
+
+.footer-wrapper {
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-text {
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  text-shadow: .1rem .1rem .5rem #333;
+}
