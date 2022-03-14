@@ -288,3 +288,7 @@ select {
   z-index: 10;
   letter-spacing: .1rem;
 }
+
+.store-details--muted {
+  color: rgba(51, 51, 51, 0.3);
+}

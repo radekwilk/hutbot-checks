@@ -139,6 +139,8 @@ $(document).ready(function() {
                 if(numOfSheets > 1) { 
                     // if is more than one sheet, it will display error message
                     displayError(errorDisplay, errorsMsg.delateTab)
+                    // reset store display message to its default values
+                    displayStoreDetails()
                 } else {
                     if(sheetName) {
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -355,8 +357,13 @@ $(document).ready(function() {
     }
 
     // function to display store details
-    const displayStoreDetails = (hutName, hutNumber) => {
+    const displayStoreDetails = (hutName = 'Store Name', hutNumber = '1234') => {
         storeDetails.innerText = `${hutName} - ${hutNumber}`
+        if (hutName === 'Store Name') {
+            storeDetails.classList.add('store-details--muted')
+        } else {
+            storeDetails.classList.remove('store-details--muted')
+        }
     }
 
 });
