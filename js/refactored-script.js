@@ -49,7 +49,7 @@ $(document).ready(function() {
     const errorsMsg = {
         selectFile: "Please select excel file first",
         selectTask: "Please select question or task from dropdown list",
-        delateTab: "Please delate Report tag in your Excel file. It is causing download data issue.",
+        delateTab: "Please delate Report sheet in selected Excel file. It's causing issues with data download.",
         missingTabs: "Something went wrong. Please ensure you are checking valid Hutbot file.",
     }
 
