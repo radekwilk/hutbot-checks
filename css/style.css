@@ -57,6 +57,7 @@ font-family: 'Roboto', sans-serif;
   border: 2px solid rgba(227, 42, 51, 0.6);
   border-radius: .5rem;
   background-color: #fff;
+  /* box-shadow: .1rem .1rem 1rem rgba(68,68,68, 0.6); */
 }
 
 
@@ -274,6 +275,7 @@ select {
   border: 1px solid #ffc2ce;
   border-radius: .5rem;
   text-align: center;
+  /* box-shadow: .5rem .5rem 2rem rgba(68,68,68, 0.2); */
 }
 
 .store-details::before {
@@ -287,6 +289,7 @@ select {
   left: 2rem;
   z-index: 10;
   letter-spacing: .1rem;
+  border: none;
 }
 
 .store-details--muted {

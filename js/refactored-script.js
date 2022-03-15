@@ -30,20 +30,55 @@ $(document).ready(function() {
     let myData;
 
     // object with Hutbot questions we have to check - value in SELECT will correspond to arrey index
-    const questions = {
-        q1: "Check the temperature of hot water at a non-handwash sink.",
-        q1_limit: 49,
-        q1_type: 'hot',
-        q2: "Record the temperature of the walk-in Freezer.",
-        q2_limit: -15,
-        q2_type: 'cold',
-        q3: "Record the temperature of the walk-in fridge.",
-        q3_limit: 5,
-        q3_type: 'cold',
-        q4: "Mark yes if you completed your weekly fire safety test and use the comment box to record the call point",
-        q5: "Record the names of any visitors to your Hut during your shift"
-    }
+    // const questions = {
+    //     q1: "Check the temperature of hot water at a non-handwash sink.",
+    //     q1_limit: 49,
+    //     q1_type: 'hot',
+    //     q2: "Record the temperature of the walk-in Freezer.",
+    //     q2_limit: -15,
+    //     q2_type: 'cold',
+    //     q3: "Record the temperature of the walk-in fridge.",
+    //     q3_limit: 5,
+    //     q3_type: 'cold',
+    //     q4: "Mark yes if you completed your weekly fire safety test and use the comment box to record the call point",
+    //     q5: "Record the names of any visitors to your Hut during your shift"
+    // }
     
+
+    // object with Hutbot questions we have to check - value in SELECT will correspond to arrey index
+    const questionsObj = {
+        q1: {
+            q: "Check the temperature of hot water at a non-handwash sink.",
+            limit: 49,
+            type: 'hot',
+            isYesNoQuestion: false
+        },
+        q2: {
+            q: "Record the temperature of the walk-in Freezer.",
+            limit: -15,
+            type: 'cold',
+            isYesNoQuestion: false
+        },
+        q3: {
+            q: "Record the temperature of the walk-in fridge.",
+            limit: 5,
+            type: 'cold',
+            isYesNoQuestion: false
+        },
+        q4: {
+            q: "Mark yes if you completed your weekly fire safety test and use the comment box to record the call point",
+            limit: '',
+            type: '',
+            isYesNoQuestion: true
+        },
+        q5: {
+            q: "Record the names of any visitors to your Hut during your shift",
+            limit: '',
+            type: '',
+            isYesNoQuestion: true
+        },
+
+    }
 
     // Object with error messages
     const errorsMsg = {
@@ -73,9 +108,12 @@ $(document).ready(function() {
         }
 
         //getting our question based on user selection
-        const selectedQuestion = convertQuestion(task).question
+        // const selectedQuestion = convertQuestion(task).question
+        const selectedQuestion = convertQuestion(task).q
+       
         //find out is there is any limit assigned to it
         enteredValueLimit = convertQuestion(task).limit
+        
         //find out is there is any limit type assigned to it
         typeOfTheLimit = convertQuestion(task).type
         const inputVal = fileInput[0].value
@@ -254,44 +292,69 @@ $(document).ready(function() {
     }
 
     //function converting SELECT value into a question
+    // const convertQuestion = (questionVal) => {
+    //     switch (questionVal) {
+    //         case 'q1':
+    //             return {
+    //                 question: questions.q1,
+    //                 limit: questions.q1_limit,
+    //                 type: questions.q1_type,
+    //              }
+    //         case 'q2':
+    //             return {
+    //                 question: questions.q2,
+    //                 limit: questions.q2_limit,
+    //                 type: questions.q2_type,
+    //              }
+    //         case 'q3':
+    //             return {
+    //                 question: questions.q3,
+    //                 limit: questions.q3_limit,
+    //                 type: questions.q3_type
+    //              }
+    //         case 'q4':
+    //             return {
+    //                 question: questions.q4,
+    //                 limit: '',
+    //                 type: '',
+    //              }
+    //         case 'q5':
+    //             return {
+    //                 question: questions.q5,
+    //                 limit: '',
+    //                 type: '',
+    //              }
+    //         default:
+    //             return {
+    //                 question: questionVal,
+    //                 limit: '',
+    //                 type: '',
+    //              }
+    //     }
+    // }
+
+
+    //function converting SELECT value into a question
     const convertQuestion = (questionVal) => {
         switch (questionVal) {
             case 'q1':
-                return {
-                    question: questions.q1,
-                    limit: questions.q1_limit,
-                    type: questions.q1_type,
-                 }
+                return questionsObj.q1
             case 'q2':
-                return {
-                    question: questions.q2,
-                    limit: questions.q2_limit,
-                    type: questions.q2_type,
-                 }
+                return questionsObj.q2
             case 'q3':
-                return {
-                    question: questions.q3,
-                    limit: questions.q3_limit,
-                    type: questions.q3_type
-                 }
+                return questionsObj.q3
             case 'q4':
-                return {
-                    question: questions.q4,
-                    limit: '',
-                    type: '',
-                 }
+                return questionsObj.q4
             case 'q5':
-                return {
-                    question: questions.q5,
-                    limit: '',
-                    type: '',
-                 }
+                return questionsObj.q5
             default:
                 return {
-                    question: questionVal,
+                    q: questionVal,
                     limit: '',
                     type: '',
+                    isYesNoQuestion: false
                  }
+            
         }
     }
 
