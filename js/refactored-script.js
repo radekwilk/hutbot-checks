@@ -45,7 +45,7 @@ $(document).ready(function() {
     // }
     
 
-    // object with Hutbot questions we have to check - value in SELECT will correspond to arrey index
+    // object with Hutbot questions we have to check - value in SELECT will correspond to one of the key values
     const questionsObj = {
         q1: {
             q: "Check the temperature of hot water at a non-handwash sink.",
@@ -77,6 +77,18 @@ $(document).ready(function() {
             type: '',
             isYesNoQuestion: true
         },
+        q6: {
+            q: "Record the temperature of the Freezer.",
+            limit: -15,
+            type: 'cold',
+            isYesNoQuestion: false
+        },
+        q7: {
+            q: "Record the temperature of the fridge.",
+            limit: 5,
+            type: 'cold',
+            isYesNoQuestion: false
+        },
 
     }
 
@@ -86,6 +98,7 @@ $(document).ready(function() {
         selectTask: "Please select question or task from dropdown list",
         delateTab: "Please delate Report sheet in selected Excel file. It's causing issues with data download.",
         missingTabs: "Something went wrong. Please ensure you are checking valid Hutbot file.",
+        noRecords: 'Could not find any records for this question',
     }
 
     //Listening for click on the 'GET INFO' button
@@ -129,17 +142,31 @@ $(document).ready(function() {
 
                 const taskCount = countTask(myData, selectedQuestion)
 
-                insertMissingPercent(missedSection, taskCount)
-                console.log('We are in tasks part')
-                console.log(`NUmber of ${task} task is ${taskCount.count}, missed are ${taskCount.missed} which is ${taskCount.percent}%` )
+                // if there is not record, display error message, otherwise display informations
+                if(taskCount === 0) {
+                     // if file is not selected, it will display error message
+                     displayError(errorDisplay, errorsMsg.noRecords)
+                } else {
+                    insertMissingPercent(missedSection, taskCount)
+                    console.log('We are in tasks part')
+                    console.log(`NUmber of ${task} task is ${taskCount.count}, missed are ${taskCount.missed} which is ${taskCount.percent}%` )
+                }
             } else {
                 const taskCount = countRoutines(myData, selectedQuestion)
                 // Hide missingSection - we do not need it here
                 hideEl(missedSection)
+
+                // if there is not record, display error message, otherwise display informations
+                if(taskCount === 0) {
+                     // if file is not selected, it will display error message
+                     displayError(errorDisplay, errorsMsg.noRecords)
+                } else {
+                    console.log('We are in questions part')
+                    console.log(`NUmber of ${task} task is ${taskCount}` )
+                    console.log(enteredValueLimit)
+                }
                 
-                console.log('We are in questions part')
-                console.log(`NUmber of ${task} task is ${taskCount}` )
-                console.log(enteredValueLimit)
+                
             }
 
         } else {
@@ -228,7 +255,11 @@ $(document).ready(function() {
         let convertedDate;  // date after conversion from Excel to JS
         //counting how many times this particular routine has been completed
         for(let i = 0; i < obj.length; i++) {
-            if(obj[i]['Question Name'] === routineName) {
+
+            let currQuestionName = obj[i]['Question Name']
+            let doesInclude = currQuestionName.includes(routineName)
+            // if(obj[i]['Question Name'] === routineName) { 
+            if(doesInclude) {
                 answer = obj[i]['Question Answer']
                 text = obj[i]['Question Text']
                 if(!text) text = "No"
@@ -347,6 +378,10 @@ $(document).ready(function() {
                 return questionsObj.q4
             case 'q5':
                 return questionsObj.q5
+            case 'q6':
+                return questionsObj.q6
+            case 'q7':
+                return questionsObj.q7
             default:
                 return {
                     q: questionVal,
