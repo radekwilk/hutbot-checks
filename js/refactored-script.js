@@ -11,6 +11,18 @@ $(document).ready(function() {
     const calcMissedPercent = document.getElementById('missed-percent')
     const missedSection = document.querySelector('.missed-tasks-section')
     const storeDetails = document.querySelector('.store-details')
+    // Modal DOM variables
+    const sectionModal = document.querySelector('.section-modal')
+    const modalTaskName = document.querySelector('.modal-task-name')
+    const modalTaskIndex = document.querySelector('.modal-row-index')
+    const closeModal = document.querySelector('.close-modal')
+    const modalTaskAnswer = document.querySelector('.modal-task-answer')
+    const modalTextAnswer = document.querySelector('modal-status-answer')
+    const modalDateAnswer = document.querySelector('.modal-date-answer')
+    const modalCompletedBy = document.querySelector(".modal-completed-by-answer")
+    const helpText = document.querySelector('#help-text')
+    const copyBtn = document.querySelector('.copy-text')
+
 
     const missingTreshold = 10; // variable to hold a treshold for allowed % of missing tasks
 
@@ -29,68 +41,101 @@ $(document).ready(function() {
     // variable holding all the data from excel file
     let myData;
 
-    // object with Hutbot questions we have to check - value in SELECT will correspond to arrey index
-    // const questions = {
-    //     q1: "Check the temperature of hot water at a non-handwash sink.",
-    //     q1_limit: 49,
-    //     q1_type: 'hot',
-    //     q2: "Record the temperature of the walk-in Freezer.",
-    //     q2_limit: -15,
-    //     q2_type: 'cold',
-    //     q3: "Record the temperature of the walk-in fridge.",
-    //     q3_limit: 5,
-    //     q3_type: 'cold',
-    //     q4: "Mark yes if you completed your weekly fire safety test and use the comment box to record the call point",
-    //     q5: "Record the names of any visitors to your Hut during your shift"
-    // }
+    // this variable will hold name of selected task globally
+    let globalTaskName = '';
+
+    // setting max number of characters we want to display for each question
+    const strCount = 90;
     
 
-    // object with Hutbot questions we have to check - value in SELECT will correspond to one of the key values
-    const questionsObj = {
-        q1: {
-            q: "Check the temperature of hot water at a non-handwash sink.",
-            limit: 49,
-            type: 'hot',
-            isYesNoQuestion: false
-        },
-        q2: {
-            q: "Record the temperature of the walk-in Freezer.",
-            limit: -15,
-            type: 'cold',
-            isYesNoQuestion: false
-        },
-        q3: {
-            q: "Record the temperature of the walk-in fridge.",
-            limit: 5,
-            type: 'cold',
-            isYesNoQuestion: false
-        },
-        q4: {
-            q: "Mark yes if you completed your weekly fire safety test and use the comment box to record the call point",
-            limit: '',
-            type: '',
-            isYesNoQuestion: true
-        },
-        q5: {
-            q: "Record the names of any visitors to your Hut during your shift",
-            limit: '',
-            type: '',
-            isYesNoQuestion: true
-        },
-        q6: {
-            q: "Record the temperature of the Freezer.",
-            limit: -15,
-            type: 'cold',
-            isYesNoQuestion: false
-        },
-        q7: {
-            q: "Record the temperature of the fridge.",
-            limit: 5,
-            type: 'cold',
-            isYesNoQuestion: false
-        },
+   // object with Hutbot questions we have to check - value in SELECT will correspond to one of the key values
 
-    }
+   const questionsObj = {
+
+    q1: {
+        q: "Check the temperature of hot water at a non-handwash sink.",
+        limit: 49,
+        type: 'hot',
+        isYesNoQuestion: false,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+        }
+    },
+    q2: {
+        q: "Record the temperature of the walk-in Freezer.",
+        limit: -15,
+        type: 'cold',
+        isYesNoQuestion: false,
+        isYesNoQuestion: false,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+        }
+    },
+    q3: {
+        q: "Record the temperature of the walk-in fridge.",
+        limit: 5,
+        type: 'cold',
+        isYesNoQuestion: false,
+        isYesNoQuestion: false,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+        }
+    },
+    q4: {
+        q: "Mark yes if you completed your weekly fire safety test and use the comment box to record the call point",
+        limit: '',
+        type: '',
+        isYesNoQuestion: true,
+        isYesNoQuestion: false,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+           return `The team have to recorded the fire point used to check the alarm ${this.missed} times when the question has been answered positively`  
+        }
+    },
+    q5: {
+        q: "Record the names of any visitors to your Hut during your shift",
+        limit: '',
+        type: '',
+        isYesNoQuestion: true,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+           return `Visitors names have not been logged on ${this.missed} occasion when answered Yes`  
+        }
+    },
+    q6: {
+        q: "Record the temperature of the Freezer.",
+        limit: -15,
+        type: 'cold',
+        isYesNoQuestion: false,
+        isYesNoQuestion: false,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+        }
+    },
+
+    q7: {
+        q: "Record the temperature of the fridge.",
+        limit: 5,
+        type: 'cold',
+        isYesNoQuestion: false,
+        isYesNoQuestion: false,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+        }
+    },
+}
 
     // Object with error messages
     const errorsMsg = {
@@ -103,7 +148,7 @@ $(document).ready(function() {
 
     //Listening for click on the 'GET INFO' button
     btn.addEventListener('click', (e) => {
-        e.preventDefault = true
+        e.preventDefault()
 
         //firstly, hide error message paragraph if any error is displayed
         hideEl(errorDisplay)
@@ -113,6 +158,10 @@ $(document).ready(function() {
         const task = checkSelectOption(selectedTask)
         console.log(task)
 
+         // assign current task name to its global variable
+         globalTaskName = task;
+
+        //  TODO: We can add typeOfRoutine to object as one of the keys
         //if selected tasks is one of the YesNo qestions, it will return typeOfRoutine = question, otherwise it will be a task
         if (task[0] === 'q') {
             typeOfRoutine = 'question'
@@ -127,8 +176,10 @@ $(document).ready(function() {
         //find out is there is any limit assigned to it
         enteredValueLimit = convertQuestion(task).limit
         
-        //find out is there is any limit type assigned to it
+        //find out if there is any limit type assigned to it
         typeOfTheLimit = convertQuestion(task).type
+
+        // check if we have any file uploaded
         const inputVal = fileInput[0].value
 
         //clear the answers list for new file upload
@@ -142,11 +193,12 @@ $(document).ready(function() {
 
                 const taskCount = countTask(myData, selectedQuestion)
 
-                // if there is not record, display error message, otherwise display informations
+                // if there is not record, display error message, otherwise display fetched information
                 if(taskCount === 0) {
                      // if file is not selected, it will display error message
                      displayError(errorDisplay, errorsMsg.noRecords)
                 } else {
+                    //this will display info bar with task count and % of missing checks
                     insertMissingPercent(missedSection, taskCount)
                     console.log('We are in tasks part')
                     console.log(`NUmber of ${task} task is ${taskCount.count}, missed are ${taskCount.missed} which is ${taskCount.percent}%` )
@@ -156,7 +208,7 @@ $(document).ready(function() {
                 // Hide missingSection - we do not need it here
                 hideEl(missedSection)
 
-                // if there is not record, display error message, otherwise display informations
+                // if there is not record, display error message, otherwise display fetched information
                 if(taskCount === 0) {
                      // if file is not selected, it will display error message
                      displayError(errorDisplay, errorsMsg.noRecords)
@@ -233,6 +285,23 @@ $(document).ready(function() {
     });
 
 
+    //event listener for click on any of the task list li, to display task detail in modal.
+    answersList.addEventListener('click', (e) => {
+        const rowID = e.target.id
+        console.log(rowID)
+        displayTaskDetailsModal(rowID, myData)
+    })
+
+    // Close modal event listener
+    closeModal.addEventListener('click', () => {
+        sectionModal.style.display = 'none'
+    })
+
+    // listening for copy button click to copy help text
+    copyBtn.addEventListener('click', ()=> {
+        copyToClipBoard()
+    })
+
     // FUNCTIONS
 
     // function displaying error message 
@@ -253,6 +322,8 @@ $(document).ready(function() {
         let text;    // this is variable holding text (if any) for given question 
         let shiftDate;  //shift date
         let convertedDate;  // date after conversion from Excel to JS
+        let countIncorrect = 0; //this is variable to count incorrect values with no actions
+
         //counting how many times this particular routine has been completed
         for(let i = 0; i < obj.length; i++) {
 
@@ -272,14 +343,25 @@ $(document).ready(function() {
                 // checking if store is entering correct value, base on its limit
                 const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
                 
-                newLi.innerHTML = `<span class="answer answer--text">${count}: Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer}</span><span class="answer answer--value">, Action taken?  ${text}</span></div>`
+                newLi.innerHTML = `<span class="answer answer--text">${count}: Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
                 
                 if (validValue === 'incorrect') {
                     newLi.classList.add('incorrect-value')
+                     // count incorrect answers without an action
+                     if(text === 'No') countIncorrect++
                 }
                 answersList.appendChild(newLi)
             }
         }
+
+        // set the incorrect value for selected task/question
+        questionsObj[globalTaskName].incorrect = countIncorrect
+
+        //run the helpingACEText() method to get correct help text
+        const ACEText = questionsObj[globalTaskName].helpingACEText()
+
+        //display this text in textarea
+        helpingACEText(ACEText, countIncorrect)
 
         return count;
     }
@@ -302,11 +384,14 @@ $(document).ready(function() {
                     
                 }
                 questionName = obj[i]['Question Name']
+                // trim the question to limited number of characters
+                questionName = trimString(questionName, strCount)
+
                 questionAnswer = obj[i]['Question Answer']
 
                 // Adding new <li> element into DOM
                 const newLi = document.createElement('li')
-                newLi.innerHTML = `<span class="answer-text">${questionName}:</span><span class="answer">${questionAnswer}</span>`
+                newLi.innerHTML = `<span class="answer-text">${questionName}:</span><span class="answer">${questionAnswer}<i class="bx bx-edit edit-icon" id="${i}"></i></span>`
                 answersList.appendChild(newLi)
             }
 
@@ -322,49 +407,8 @@ $(document).ready(function() {
         }
     }
 
-    //function converting SELECT value into a question
-    // const convertQuestion = (questionVal) => {
-    //     switch (questionVal) {
-    //         case 'q1':
-    //             return {
-    //                 question: questions.q1,
-    //                 limit: questions.q1_limit,
-    //                 type: questions.q1_type,
-    //              }
-    //         case 'q2':
-    //             return {
-    //                 question: questions.q2,
-    //                 limit: questions.q2_limit,
-    //                 type: questions.q2_type,
-    //              }
-    //         case 'q3':
-    //             return {
-    //                 question: questions.q3,
-    //                 limit: questions.q3_limit,
-    //                 type: questions.q3_type
-    //              }
-    //         case 'q4':
-    //             return {
-    //                 question: questions.q4,
-    //                 limit: '',
-    //                 type: '',
-    //              }
-    //         case 'q5':
-    //             return {
-    //                 question: questions.q5,
-    //                 limit: '',
-    //                 type: '',
-    //              }
-    //         default:
-    //             return {
-    //                 question: questionVal,
-    //                 limit: '',
-    //                 type: '',
-    //              }
-    //     }
-    // }
 
-
+    // TODO: This could be changed to loop and see if selected option is in question object
     //function converting SELECT value into a question
     const convertQuestion = (questionVal) => {
         switch (questionVal) {
@@ -461,6 +505,80 @@ $(document).ready(function() {
             storeDetails.classList.add('store-details--muted')
         } else {
             storeDetails.classList.remove('store-details--muted')
+        }
+    }
+
+
+     // function to display modal with task details
+     const displayTaskDetailsModal = (index, obj) => {
+        // it will only work when passed index is a number.
+        if(index) {
+            // take the date and time when this task was completed
+            const completionDate = obj[index]['Routine Submitted At']
+
+            //then change its format to JS date if date is entered
+            if(completionDate) {
+
+                const formattedDate = excelDateToJSDate(completionDate)
+                const dateString = new Date(formattedDate);
+                const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'};
+                modalDateAnswer.innerText = dateString.toLocaleDateString('en-us', options)
+            } else {
+                modalDateAnswer.innerText = ''
+            }
+            // status variable
+            const status = obj[index]['Routine Status']
+            sectionModal.style.display = 'block'
+            modalTaskIndex.innerText = index
+            modalTaskName.innerText = obj[index]['Question Name']
+            modalTaskAnswer.innerText = obj[index]['Question Answer']
+            modalStatusAnswer.innerText = status
+            modalTextAnswer.innerText = obj[index]['Question Text']
+            modalCompletedBy.innerText = obj[index]['Shift Lead']
+
+            // Adding color to the status, Green - on time, orange - late. Red for missed
+            if(status === 'ON TIME') {
+                modalStatusAnswer.style.color = 'green'
+            } else if(status === 'LATE') {
+                modalStatusAnswer.style.color = 'orange'
+            } else if(status === 'MISSED') {
+                modalStatusAnswer.style.color = 'red'
+            } else {
+                modalStatusAnswer.style.color = 'white'
+            }
+
+        } else {
+            console.log('You must clicked something else')
+        }
+
+    }
+
+
+    // function to reduce number of characters if it's too long
+    const trimString = (text, count) => {
+
+        if (text.length > count) {
+            return text.slice(0,count) + ' ...'
+        } else {
+            return text
+        }
+    }
+
+
+    // function to copy text to clipboard
+    const copyToClipBoard = () => {
+        helpText.select();
+        document.execCommand('copy');
+        alert("Copied!");
+    }
+
+    //function to add correct text we can copy to ACE tool in case task is missed or entered incorrectly
+    const helpingACEText = (str, inncorrectVal) => {
+
+        if(inncorrectVal >= 2) {
+            helpText.innerText = str
+        } else {
+            helpText.innerText = 'All good for this one'
         }
     }
 
