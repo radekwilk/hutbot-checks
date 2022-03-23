@@ -243,6 +243,7 @@ select {
   justify-content: center;
   margin-bottom: 4rem;
   padding: 1.6rem;
+  border-radius: .5rem;
 }
 
 /* STYLING OF INFO DISPLAY */
@@ -399,8 +400,9 @@ select {
   background-color: #63dd9c;
   width: 75%;
   padding: 2rem;
+  border-radius: .5rem;
   font-size: 1.8rem;
-  margin: 0 auto;
+  margin: 0 auto 4rem auto;
   position: relative;
 }
 

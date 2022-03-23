@@ -17,7 +17,8 @@ $(document).ready(function() {
     const modalTaskIndex = document.querySelector('.modal-row-index')
     const closeModal = document.querySelector('.close-modal')
     const modalTaskAnswer = document.querySelector('.modal-task-answer')
-    const modalTextAnswer = document.querySelector('modal-status-answer')
+    const modalStatusAnswer = document.querySelector('.modal-status-answer')
+    const modalTextAnswer = document.querySelector('.modal-text-answer')
     const modalDateAnswer = document.querySelector('.modal-date-answer')
     const modalCompletedBy = document.querySelector(".modal-completed-by-answer")
     const helpText = document.querySelector('#help-text')
@@ -45,7 +46,10 @@ $(document).ready(function() {
     let globalTaskName = '';
 
     // setting max number of characters we want to display for each question
-    const strCount = 90;
+    const strCount = 80;
+
+    // string replacing undefined or empty string as answer to question
+    const answerToEmptyString = 'Check missed'
     
 
    // object with Hutbot questions we have to check - value in SELECT will correspond to one of the key values
@@ -337,6 +341,9 @@ $(document).ready(function() {
                 shiftDate = obj[i]['Shift Date']
                 convertedDate = excelDateToJSDate(shiftDate)
 
+                // check if we have UNDEFINED answer. If we have, it will return Missed check, otherwise it will returned entered value
+                answer = checkIfUndefinedAnswer(answer)
+
                 count++
                 console.log(`${count}: date: ${convertedDate}, answer: ${answer}`)
                 const newLi = document.createElement('li')
@@ -388,6 +395,9 @@ $(document).ready(function() {
                 questionName = trimString(questionName, strCount)
 
                 questionAnswer = obj[i]['Question Answer']
+
+                // check if we have UNDEFINED answer. If we have, it will return Missed check, otherwise it will returned entered value
+                questionAnswer = checkIfUndefinedAnswer(questionAnswer)
 
                 // Adding new <li> element into DOM
                 const newLi = document.createElement('li')
@@ -515,6 +525,10 @@ $(document).ready(function() {
         if(index) {
             // take the date and time when this task was completed
             const completionDate = obj[index]['Routine Submitted At']
+            let answer = obj[index]['Question Answer']
+
+            // checks of empty of undefined and then convert if it is
+            answer = checkIfUndefinedAnswer(answer)
 
             //then change its format to JS date if date is entered
             if(completionDate) {
@@ -531,10 +545,17 @@ $(document).ready(function() {
             sectionModal.style.display = 'block'
             modalTaskIndex.innerText = index
             modalTaskName.innerText = obj[index]['Question Name']
-            modalTaskAnswer.innerText = obj[index]['Question Answer']
+
+            modalTaskAnswer.innerText = answer
             modalStatusAnswer.innerText = status
             modalTextAnswer.innerText = obj[index]['Question Text']
             modalCompletedBy.innerText = obj[index]['Shift Lead']
+
+            if(answer === answerToEmptyString) {
+                modalTaskAnswer.style.color = 'red'
+            } else {
+                modalTaskAnswer.style.color = 'white'
+            }
 
             // Adding color to the status, Green - on time, orange - late. Red for missed
             if(status === 'ON TIME') {
@@ -573,12 +594,21 @@ $(document).ready(function() {
     }
 
     //function to add correct text we can copy to ACE tool in case task is missed or entered incorrectly
-    const helpingACEText = (str, inncorrectVal) => {
+    const helpingACEText = (str, incorrectVal) => {
 
-        if(inncorrectVal >= 2) {
+        if(incorrectVal >= 2) {
             helpText.innerText = str
         } else {
             helpText.innerText = 'All good for this one'
+        }
+    }
+
+    // function to deal with undefined answer
+    const checkIfUndefinedAnswer = (answer) => {
+        if(answer) {
+            return answer
+        } else {
+            return answerToEmptyString
         }
     }
 
