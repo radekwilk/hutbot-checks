@@ -16,6 +16,17 @@ font-family: 'Roboto', sans-serif;
 }
 /* END OF GENERAL SETTINGS */
 
+/* Styling of version display box */
+.varsion-display {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  width: 6rem;
+  padding: .5rem 1.5rem;
+  font-size: 1.4rem;
+
+}
+
 /* HEADER */
 
 .header {
@@ -220,10 +231,10 @@ select {
   list-style: none;
   border-bottom: 1px solid rgba(227, 42, 51, 0.6);
   margin-bottom: 1.5rem;
-  padding-bottom: .5rem;
+  padding: .5rem 1.5rem;
 }
 
-.answer {
+.answer { 
   margin-right: 1.5rem;
 }
 
@@ -404,6 +415,7 @@ select {
   font-size: 1.8rem;
   margin: 0 auto 4rem auto;
   position: relative;
+  display: none;
 }
 
 .copy-text {

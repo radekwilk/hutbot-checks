@@ -357,6 +357,12 @@ $(document).ready(function() {
                      // count incorrect answers without an action
                      if(text === 'No') countIncorrect++
                 }
+
+                // if user missed the answer or entered incorrect one, highlight it
+                if(answer === answerToEmptyString) {
+                    newLi.classList.add('incorrect-value')
+                }
+
                 answersList.appendChild(newLi)
             }
         }
@@ -402,6 +408,12 @@ $(document).ready(function() {
                 // Adding new <li> element into DOM
                 const newLi = document.createElement('li')
                 newLi.innerHTML = `<span class="answer-text">${questionName}:</span><span class="answer">${questionAnswer}<i class="bx bx-edit edit-icon" id="${i}"></i></span>`
+               
+                 // if user missed the answer or entered incorrect one, highlight it
+                 if(questionAnswer === answerToEmptyString) {
+                    newLi.classList.add('incorrect-value')
+                }
+
                 answersList.appendChild(newLi)
             }
 
@@ -481,6 +493,16 @@ $(document).ready(function() {
         } else {
             el.classList.remove('red-section')
             el.classList.add('green-section')
+        }
+
+    }
+
+    // function highlighting tasks which were not completed (empty or counted as undefined)
+    const markUndefined = (el) => {
+
+        if(el.innerText === answerToEmptyString) {
+            el.classList.remove('green-section')
+            el.classList.add('red-section')
         }
 
     }
