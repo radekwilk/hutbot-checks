@@ -36,6 +36,9 @@ $(document).ready(function() {
     // this variable is to store VALUE of the limit for given task
     let enteredValueLimit;
 
+    // it is variable to hold value if answer to question is Yes
+    let isYesAnswer = false;
+
     // this variable is to store TYPE of the limit for given task
     let typeOfTheLimit;
 
@@ -181,6 +184,9 @@ $(document).ready(function() {
         //find out if there is any limit type assigned to it
         typeOfTheLimit = convertQuestion(task).type
 
+        //find out if answer to question is Yes or No
+        isYesAnswer = convertQuestion(task).isYesNoQuestion
+
         // check if we have any file uploaded
         const inputVal = fileInput[0].value
 
@@ -206,7 +212,7 @@ $(document).ready(function() {
                     console.log(`NUmber of ${task} task is ${taskCount.count}, missed are ${taskCount.missed} which is ${taskCount.percent}%` )
                 }
             } else {
-                const taskCount = countRoutines(myData, selectedQuestion)
+                const taskCount = countRoutines(myData, selectedQuestion, isYesAnswer)
                 // Hide missingSection - we do not need it here
                 hideEl(missedSection)
 
@@ -318,16 +324,19 @@ $(document).ready(function() {
     }
 
     // This function will count how many times given routine occured
-    const countRoutines = (obj, routineName) => {
+    const countRoutines = (obj, routineName, isYesNo) => {
         let count = 0 //counter of routines
         let answer;  // this variable holding answer to the question
         let text;    // this is variable holding text (if any) for given question 
         let shiftDate;  //shift date
         let convertedDate;  // date after conversion from Excel to JS
         let countIncorrect = 0; //this is variable to count incorrect values with no actions
+        let newLi; // this is variable which will hold new <li>
         
         // reset it to ZERO, ensuring each task start with "clean sheet"
         countMissedTask = 0;
+
+        console.log(`My question is Yes-No answer?: ${isYesNo}`)
 
         //counting how many times this particular routine has been completed
         for(let i = 0; i < obj.length; i++) {
@@ -343,30 +352,59 @@ $(document).ready(function() {
                 convertedDate = excelDateToJSDate(shiftDate)
 
                 // check if we have UNDEFINED answer. If we have, it will return Missed check, otherwise it will returned entered value
-                answer = checkIfUndefinedAnswer(answer)
+                if(isYesNo === true) {
+                    // TODO: Do something when it is TRUE for YesNo answers question
+                    // This need to be re-factored
+                    if(answer === 'Yes') {
+                        count++
 
-                count++
-                console.log(`${count}: date: ${convertedDate}, answer: ${answer}`)
-                const newLi = document.createElement('li')
-                // checking if store is entering correct value, base on its limit
+                        newLi = document.createElement('li')
 
+                        // checking if store is entering correct value, base on its limit
+                        const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
+                    
+                        newLi.innerHTML = `<span class="answer answer--text">${count}: Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Name recorded?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
+                    
+                        if (text === 'No') {
+                            newLi.classList.add('incorrect-value')
+                            // count incorrect answers without an action
+                            if(text === 'No') countIncorrect++
+                        }
 
-                const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
+                        // if user missed the answer or entered incorrect one, highlight it
+                        if(answer === answerToEmptyString) {
+                            newLi.classList.add('incorrect-value')
+                        }
+
+                        answersList.appendChild(newLi)
+                    }
+                } else {
+                    answer = checkIfUndefinedAnswer(answer)
+
+                    count++
+                    console.log(`${count}: date: ${convertedDate}, answer: ${answer}`)
+                    newLi = document.createElement('li')
+
+                    // checking if store is entering correct value, base on its limit
+                    const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
                 
-                newLi.innerHTML = `<span class="answer answer--text">${count}: Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
+                    newLi.innerHTML = `<span class="answer answer--text">${count}: Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
                 
-                if (validValue === 'incorrect') {
-                    newLi.classList.add('incorrect-value')
-                     // count incorrect answers without an action
-                     if(text === 'No') countIncorrect++
-                }
+                    if (validValue === 'incorrect') {
+                        newLi.classList.add('incorrect-value')
+                        // count incorrect answers without an action
+                        if(text === 'No') countIncorrect++
+                    }
 
-                // if user missed the answer or entered incorrect one, highlight it
-                if(answer === answerToEmptyString) {
-                    newLi.classList.add('incorrect-value')
-                }
+                    // if user missed the answer or entered incorrect one, highlight it
+                    if(answer === answerToEmptyString) {
+                        newLi.classList.add('incorrect-value')
+                     }
 
-                answersList.appendChild(newLi)
+                    answersList.appendChild(newLi)
+                }
+                
+                
             }
         }
 
@@ -387,7 +425,7 @@ $(document).ready(function() {
         return count;
     }
 
-// Function checking how many times given taks accured
+// Function checking how many times given task ocurred
     const countTask = (obj, taskName) => {
         let countTotal = 0; //variable to hold total number of completed tasks
         let countMissed = 0; //variable to hold total number of missed tasks
