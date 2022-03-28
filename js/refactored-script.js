@@ -50,6 +50,9 @@ $(document).ready(function() {
 
     // string replacing undefined or empty string as answer to question
     const answerToEmptyString = 'Check missed'
+ 
+    //this is variable to count missed tasks (need this value for help text)
+    let countMissedTask = 0 
     
 
    // object with Hutbot questions we have to check - value in SELECT will correspond to one of the key values
@@ -72,7 +75,6 @@ $(document).ready(function() {
         limit: -15,
         type: 'cold',
         isYesNoQuestion: false,
-        isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
@@ -83,7 +85,6 @@ $(document).ready(function() {
         q: "Record the temperature of the walk-in fridge.",
         limit: 5,
         type: 'cold',
-        isYesNoQuestion: false,
         isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
@@ -96,7 +97,6 @@ $(document).ready(function() {
         limit: '',
         type: '',
         isYesNoQuestion: true,
-        isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
@@ -119,7 +119,6 @@ $(document).ready(function() {
         limit: -15,
         type: 'cold',
         isYesNoQuestion: false,
-        isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
@@ -131,7 +130,6 @@ $(document).ready(function() {
         q: "Record the temperature of the fridge.",
         limit: 5,
         type: 'cold',
-        isYesNoQuestion: false,
         isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
@@ -327,6 +325,9 @@ $(document).ready(function() {
         let shiftDate;  //shift date
         let convertedDate;  // date after conversion from Excel to JS
         let countIncorrect = 0; //this is variable to count incorrect values with no actions
+        
+        // reset it to ZERO, ensuring each task start with "clean sheet"
+        countMissedTask = 0;
 
         //counting how many times this particular routine has been completed
         for(let i = 0; i < obj.length; i++) {
@@ -348,6 +349,8 @@ $(document).ready(function() {
                 console.log(`${count}: date: ${convertedDate}, answer: ${answer}`)
                 const newLi = document.createElement('li')
                 // checking if store is entering correct value, base on its limit
+
+
                 const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
                 
                 newLi.innerHTML = `<span class="answer answer--text">${count}: Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
@@ -369,6 +372,11 @@ $(document).ready(function() {
 
         // set the incorrect value for selected task/question
         questionsObj[globalTaskName].incorrect = countIncorrect
+
+        // set the incorrect value for selected task/question
+        questionsObj[globalTaskName].missed = countMissedTask
+
+        console.log(`print missed tasks in object: ${questionsObj[globalTaskName].missed }, varaible: ${countMissedTask}`)
 
         //run the helpingACEText() method to get correct help text
         const ACEText = questionsObj[globalTaskName].helpingACEText()
@@ -618,7 +626,7 @@ $(document).ready(function() {
     //function to add correct text we can copy to ACE tool in case task is missed or entered incorrectly
     const helpingACEText = (str, incorrectVal) => {
 
-        if(incorrectVal >= 2) {
+        if(incorrectVal >= 2 || countMissedTask >= 2) {
             helpText.innerText = str
         } else {
             helpText.innerText = 'All good for this one'
@@ -630,6 +638,9 @@ $(document).ready(function() {
         if(answer) {
             return answer
         } else {
+            // increase value of undefined/missed tasks
+            countMissedTask++;
+            //return string assigned to replace undefined
             return answerToEmptyString
         }
     }
