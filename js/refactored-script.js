@@ -70,68 +70,73 @@ $(document).ready(function() {
     q1: {
         q: "Check the temperature of hot water at a non-handwash sink.",
         limit: 49,
+        shortStr: 'Hot water temp check',
         type: 'hot',
         isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
             if(this.missed < 2) {
-                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded for ${this.shortStr}`
             } else if(this.incorrect < 2) {
-                return `There are ${this.missed} temps missed with no corrective action recorded`
+                return `There are ${this.missed} temps missed with no corrective action recorded for ${this.shortStr}`
             } else {
-                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded for ${this.shortStr}`
             }   
         }
     },
     q2: {
         q: "Record the temperature of the walk-in Freezer.",
         limit: -15,
+        shortStr: 'walk-in-freezer temp check',
         type: 'cold',
         isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
             if(this.missed < 2) {
-                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded for ${this.shortStr}`
             } else if(this.incorrect < 2) {
-                return `There are ${this.missed} temps missed with no corrective action recorded`
+                return `There are ${this.missed} temps missed with no corrective action recorded for ${this.shortStr}`
             } else {
-                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded for ${this.shortStr}`
             }    
         }
     },
     q3: {
         q: "Record the temperature of the walk-in fridge.",
         limit: 5,
+        shortStr: 'walk-in-fridge temp check',
         type: 'cold',
         isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
             if(this.missed < 2) {
-                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded for ${this.shortStr}`
             } else if(this.incorrect < 2) {
-                return `There are ${this.missed} temps missed with no corrective action recorded`
+                return `There are ${this.missed} temps missed with no corrective action recorded for ${this.shortStr}`
             } else {
-                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded for ${this.shortStr}`
             }    
         }
     },
     q4: {
         q: "Mark yes if you completed your weekly fire safety test and use the comment box to record the call point",
         limit: '',
+        shortStr: 'Fire safety point test',
         type: '',
         isYesNoQuestion: true,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
-           return `The team have to recorded the fire point used to check the alarm ${this.missed} times when the question has been answered positively`  
+           return `The team have recorded that fire point has been checked but ${this.missed} times missed to record which fire point has been checked.`  
         }
     },
     q5: {
         q: "Record the names of any visitors to your Hut during your shift",
         limit: '',
+        shortStr: 'Visitors record',
         type: '',
         isYesNoQuestion: true,
         missed: 0,
@@ -143,17 +148,18 @@ $(document).ready(function() {
     q6: {
         q: "Record the temperature of the Freezer.",
         limit: -15,
+        shortStr: 'Freezers temp check',
         type: 'cold',
         isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
             if(this.missed < 2) {
-                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded for ${this.shortStr}`
             } else if(this.incorrect < 2) {
-                return `There are ${this.missed} temps missed with no corrective action recorded`
+                return `There are ${this.missed} temps missed with no corrective action recorded for ${this.shortStr}`
             } else {
-                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded for ${this.shortStr}`
             }    
         }
     },
@@ -161,17 +167,18 @@ $(document).ready(function() {
     q7: {
         q: "Record the temperature of the fridge.",
         limit: 5,
+        shortStr: 'Fridges temp check',
         type: 'cold',
         isYesNoQuestion: false,
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
             if(this.missed < 2) {
-                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded for ${this.shortStr}`
             } else if(this.incorrect < 2) {
-                return `There are ${this.missed} temps missed with no corrective action recorded`
+                return `There are ${this.missed} temps missed with no corrective action recorded for ${this.shortStr}`
             } else {
-                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded for ${this.shortStr}`
             }    
         }
     },
