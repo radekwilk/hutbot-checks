@@ -75,7 +75,13 @@ $(document).ready(function() {
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
-           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+            if(this.missed < 2) {
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+            } else if(this.incorrect < 2) {
+                return `There are ${this.missed} temps missed with no corrective action recorded`
+            } else {
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+            }   
         }
     },
     q2: {
@@ -86,7 +92,13 @@ $(document).ready(function() {
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
-           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+            if(this.missed < 2) {
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+            } else if(this.incorrect < 2) {
+                return `There are ${this.missed} temps missed with no corrective action recorded`
+            } else {
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+            }    
         }
     },
     q3: {
@@ -97,7 +109,13 @@ $(document).ready(function() {
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
-           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+            if(this.missed < 2) {
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+            } else if(this.incorrect < 2) {
+                return `There are ${this.missed} temps missed with no corrective action recorded`
+            } else {
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+            }    
         }
     },
     q4: {
@@ -130,7 +148,13 @@ $(document).ready(function() {
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
-           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+            if(this.missed < 2) {
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+            } else if(this.incorrect < 2) {
+                return `There are ${this.missed} temps missed with no corrective action recorded`
+            } else {
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+            }    
         }
     },
 
@@ -142,7 +166,13 @@ $(document).ready(function() {
         missed: 0,
         incorrect: 0,
         helpingACEText: function() {
-           return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`  
+            if(this.missed < 2) {
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded`
+            } else if(this.incorrect < 2) {
+                return `There are ${this.missed} temps missed with no corrective action recorded`
+            } else {
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded`
+            }    
         }
     },
 }
