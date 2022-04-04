@@ -408,14 +408,15 @@ select {
 
 /* Style the help text box */
 .help-section {
-  background-color: #63dd9c;
-  width: 75%;
+  background-color: #F0EDED;
+  width: 100%;
   padding: 2rem;
   border-radius: .5rem;
   font-size: 1.8rem;
   margin: 0 auto 4rem auto;
   position: relative;
   display: none;
+  margin: 5rem 0;
 }
 
 .copy-text {
@@ -451,10 +452,12 @@ select {
   padding: 1.5rem;
   border: none;
   font-family: 'Roboto', sans-serif;
+  outline: none;
 }
 
 
 .copy-info {
+  display: block;
   position: absolute;
   top: -3.5rem;
   right: -.5rem;
@@ -479,10 +482,18 @@ select {
   top: 1.7rem;
   right: 2rem;
   background-color: #333;
-  z-index: 5;
+  z-index: -10;
   transform: rotate(45deg);
 }
 
 .copy-info-copied {
+  z-index: 50;
   display: none;
+  background-color: #097a3e;
+  color: #fff;
+  transition: display 0.5s;
+}
+
+.copy-info-copied::after {
+  background-color: #097a3e;
 }

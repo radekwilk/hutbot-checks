@@ -21,8 +21,12 @@ $(document).ready(function() {
     const modalTextAnswer = document.querySelector('.modal-text-answer')
     const modalDateAnswer = document.querySelector('.modal-date-answer')
     const modalCompletedBy = document.querySelector(".modal-completed-by-answer")
+    // help text section
+    const helpSection = document.querySelector(".help-section")
     const helpText = document.querySelector('#help-text')
     const copyBtn = document.querySelector('.copy-text')
+    const copied = document.querySelector('#copied')
+    const copy = document.querySelector('#copy')
 
 
     const missingTreshold = 10; // variable to hold a treshold for allowed % of missing tasks
@@ -56,6 +60,7 @@ $(document).ready(function() {
  
     //this is variable to count missed tasks (need this value for help text)
     let countMissedTask = 0 
+
     
 
    // object with Hutbot questions we have to check - value in SELECT will correspond to one of the key values
@@ -157,6 +162,7 @@ $(document).ready(function() {
 
         //firstly, hide error message paragraph if any error is displayed
         hideEl(errorDisplay)
+        hideEl(helpSection)
 
         let typeOfRoutine = ''
         //it will check if task selected and then if selected, it will get its value
@@ -194,7 +200,7 @@ $(document).ready(function() {
         answersList.innerHTML = ''
 
         if(inputVal) {
-            console.log(`Currenty uploaded file is ${inputVal}`)
+            console.log(`Currently uploaded file is ${inputVal}`)
 
             // if this is a task, we would look for task in uploaded file
             if (typeOfRoutine === 'task') {
@@ -208,6 +214,12 @@ $(document).ready(function() {
                 } else {
                     //this will display info bar with task count and % of missing checks
                     insertMissingPercent(missedSection, taskCount)
+
+                    if (taskCount.percent > 10) {
+                        missedTaskText(taskCount.percent, selectedQuestion)
+                        showEl(helpSection)
+                    }
+
                     console.log('We are in tasks part')
                     console.log(`NUmber of ${task} task is ${taskCount.count}, missed are ${taskCount.missed} which is ${taskCount.percent}%` )
                 }
@@ -243,8 +255,9 @@ $(document).ready(function() {
     // We listen for any change in file input, and when it change we read the file and saving data in myData variable
     fileInput.change(function(evt) {
 
-        //clear the answers list for new file upload
+        //clear the answers list for new file upload and store details
         answersList.innerHTML = ''
+        storeDetails.innerHTML = 'Store name - 1245'
 
         //hide missed section as well
         hideEl(missedSection)
@@ -308,6 +321,7 @@ $(document).ready(function() {
     // listening for copy button click to copy help text
     copyBtn.addEventListener('click', ()=> {
         copyToClipBoard()
+        getDelayedInfo(copied, copy, 2000)
     })
 
     // FUNCTIONS
@@ -321,6 +335,11 @@ $(document).ready(function() {
     // function hiding error messages
     const hideEl = (el) => {
         el.style.display = 'none'
+    }
+
+     // function to show any given element
+     const showEl = (el) => {
+        el.style.display = 'block'
     }
 
     // This function will count how many times given routine occured
@@ -414,13 +433,17 @@ $(document).ready(function() {
         // set the incorrect value for selected task/question
         questionsObj[globalTaskName].missed = countMissedTask
 
-        console.log(`print missed tasks in object: ${questionsObj[globalTaskName].missed }, varaible: ${countMissedTask}`)
+        console.log(`print missed tasks in object: ${questionsObj[globalTaskName].missed }, variable: ${countMissedTask}`)
 
         //run the helpingACEText() method to get correct help text
         const ACEText = questionsObj[globalTaskName].helpingACEText()
 
         //display this text in textarea
-        helpingACEText(ACEText, countIncorrect)
+        if(countIncorrect >= 2 || countMissed >= 2) {
+            helpingACEText(ACEText, countIncorrect)
+            showEl(helpSection)
+        }
+        
 
         return count;
     }
@@ -468,6 +491,7 @@ $(document).ready(function() {
         // check missed %
         countTotal > 0 ? missedPercent = (countMissed / countTotal) * 100 : missedPercent = 0;
         missedPercent  = missedPercent.toFixed(2)
+
         return {
             count: countTotal,
             missed: countMissed,
@@ -658,7 +682,7 @@ $(document).ready(function() {
     const copyToClipBoard = () => {
         helpText.select();
         document.execCommand('copy');
-        alert("Copied!");
+        // alert("Copied!");
     }
 
     //function to add correct text we can copy to ACE tool in case task is missed or entered incorrectly
@@ -681,6 +705,25 @@ $(document).ready(function() {
             //return string assigned to replace undefined
             return answerToEmptyString
         }
+    }
+
+
+    // function to displayed delayed item (with use of setTimeout)
+    const getDelayedInfo = (elShow, elHide, delayTime) => {
+        setTimeout(() => {
+            elShow.style.display = 'none'
+            elHide.style.display = 'block'
+            
+        }, delayTime)
+
+        elShow.style.display = 'block'
+        elHide.style.display = 'none'
+    }
+
+    //function to add help text to missed tasks only
+    const missedTaskText = (missedNumber, task) => {
+        const str = `In last 4 weeks checked in Hutbot, store missed ${missedNumber}% of ${task} checks.`
+        helpText.innerText = str
     }
 
 });
