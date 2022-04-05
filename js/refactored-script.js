@@ -27,6 +27,8 @@ $(document).ready(function() {
     const copyBtn = document.querySelector('.copy-text')
     const copied = document.querySelector('#copied')
     const copy = document.querySelector('#copy')
+    // loader
+    const loader = document.getElementById('loader-wrapper')
 
 
     const missingTreshold = 10; // variable to hold a treshold for allowed % of missing tasks
@@ -197,6 +199,9 @@ $(document).ready(function() {
     btn.addEventListener('click', (e) => {
         e.preventDefault()
 
+        // display loader
+        displayLoader(loader, 1500)
+
         //firstly, hide error message paragraph if any error is displayed
         hideEl(errorDisplay)
         hideEl(helpSection)
@@ -292,6 +297,9 @@ $(document).ready(function() {
     // We listen for any change in file input, and when it change we read the file and saving data in myData variable
     fileInput.change(function(evt) {
 
+        // display loader
+        displayLoader(loader, 1000)
+
         //clear the answers list for new file upload and store details
         answersList.innerHTML = ''
         storeDetails.innerHTML = 'Store name - 1245'
@@ -345,6 +353,8 @@ $(document).ready(function() {
 
     //event listener for click on any of the task list li, to display task detail in modal.
     answersList.addEventListener('click', (e) => {
+
+
         const rowID = e.target.id
         console.log(rowID)
         displayTaskDetailsModal(rowID, myData)
@@ -352,6 +362,7 @@ $(document).ready(function() {
 
     // Close modal event listener
     closeModal.addEventListener('click', () => {
+
         sectionModal.style.display = 'none'
     })
 
@@ -761,6 +772,16 @@ $(document).ready(function() {
     const missedTaskText = (missedNumber, task) => {
         const str = `In last 4 weeks checked in Hutbot, store missed ${missedNumber}% of ${task} checks.`
         helpText.innerText = str
+    }
+
+    // function to display loader 
+    const displayLoader = (loaderEl, delayTime) => {
+        setTimeout(() => {
+            loaderEl.style.display = 'none'
+            
+        }, delayTime)
+
+        loaderEl.style.display = 'block'
     }
 
 });
