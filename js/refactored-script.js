@@ -271,7 +271,7 @@ $(document).ready(function() {
                      displayError(errorDisplay, errorsMsg.noRecords)
                 } else {
                     console.log('We are in questions part')
-                    console.log(`NUmber of ${task} task is ${taskCount}` )
+                    console.log(`Number of ${task} task is ${taskCount}` )
                     console.log(enteredValueLimit)
                 }
                 
@@ -476,8 +476,8 @@ $(document).ready(function() {
         const ACEText = questionsObj[globalTaskName].helpingACEText()
 
         //display this text in textarea
-        if(countIncorrect >= 2 || countMissed >= 2) {
-            helpingACEText(ACEText, countIncorrect)
+        if(countIncorrect >= 2 || countMissedTask >= 2) {
+            helpingACEText(ACEText, countIncorrect, countMissedTask)
             showEl(helpSection)
         }
         
@@ -723,7 +723,7 @@ $(document).ready(function() {
     }
 
     //function to add correct text we can copy to ACE tool in case task is missed or entered incorrectly
-    const helpingACEText = (str, incorrectVal) => {
+    const helpingACEText = (str, incorrectVal = 0,countMissedTask = 0) => {
 
         if(incorrectVal >= 2 || countMissedTask >= 2) {
             helpText.innerText = str
