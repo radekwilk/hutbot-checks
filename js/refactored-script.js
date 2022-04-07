@@ -21,6 +21,7 @@ $(document).ready(function() {
     const modalTextAnswer = document.querySelector('.modal-text-answer')
     const modalDateAnswer = document.querySelector('.modal-date-answer')
     const modalCompletedBy = document.querySelector(".modal-completed-by-answer")
+    const modalShiftName = document.querySelector(".modal-shift-name")
     // help text section
     const helpSection = document.querySelector(".help-section")
     const helpText = document.querySelector('#help-text')
@@ -625,6 +626,15 @@ $(document).ready(function() {
 
     }
 
+    // if val is undefined, return str (empty string by default), otherwise return val
+    const replaceUndefined = (val, str = '') => {
+        if(val) {
+            return val
+        } else {
+            return str
+        }
+    }
+
     // function which check if entered value is below required limit
     const checkLimit = (currentVal, limitVal,limitType) => {
         currentVal = Number(currentVal)
@@ -664,7 +674,7 @@ $(document).ready(function() {
         // it will only work when passed index is a number.
         if(index) {
             // take the date and time when this task was completed
-            const completionDate = obj[index]['Routine Submitted At']
+            const completionDate = obj[index]['Shift Date']
             let answer = obj[index]['Question Answer']
 
             // checks of empty of undefined and then convert if it is
@@ -689,7 +699,18 @@ $(document).ready(function() {
             modalTaskAnswer.innerText = answer
             modalStatusAnswer.innerText = status
             modalTextAnswer.innerText = obj[index]['Question Text']
-            modalCompletedBy.innerText = obj[index]['Shift Lead']
+
+            // get the name of shift leader, if undefined, replace it with 
+            let shiftLead = obj[index]['Shift Lead']
+            if(shiftLead) {
+                replaceUndefined(shiftLead, 'No name')
+            } else {
+                shiftLead = 'No name'
+            }
+            
+            modalCompletedBy.innerText = shiftLead
+            // this typically would ne Morning or Evening
+            modalShiftName.innerHTML = obj[index]['Shift Name']
 
             if(answer === answerToEmptyString) {
                 modalTaskAnswer.style.color = 'red'
