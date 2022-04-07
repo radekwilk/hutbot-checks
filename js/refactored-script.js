@@ -710,7 +710,7 @@ $(document).ready(function() {
             
             modalCompletedBy.innerText = shiftLead
             // this typically would ne Morning or Evening
-            modalShiftName.innerHTML = obj[index]['Shift Name']
+            modalShiftName.innerHTML = `${obj[index]['Shift Name']} shift`
 
             if(answer === answerToEmptyString) {
                 modalTaskAnswer.style.color = 'red'
