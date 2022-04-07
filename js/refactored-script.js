@@ -456,7 +456,7 @@ $(document).ready(function() {
                     // checking if store is entering correct value, base on its limit
                     const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
                 
-                    newLi.innerHTML = `<span class="answer answer--text">${count}: Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
+                    newLi.innerHTML = `<span class="answer answer--text">${count}  Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
                 
                     if (validValue === 'incorrect') {
                         newLi.classList.add('incorrect-value')
@@ -525,7 +525,7 @@ $(document).ready(function() {
 
                 // Adding new <li> element into DOM
                 const newLi = document.createElement('li')
-                newLi.innerHTML = `<span class="answer-text">${questionName}:</span><span class="answer">${questionAnswer}<i class="bx bx-edit edit-icon" id="${i}"></i></span>`
+                newLi.innerHTML = `<span class="answer-text">${questionName} </span><span class="answer">${questionAnswer}<i class="bx bx-edit edit-icon" id="${i}"></i></span>`
                
                  // if user missed the answer or entered incorrect one, highlight it
                  if(questionAnswer === answerToEmptyString) {
