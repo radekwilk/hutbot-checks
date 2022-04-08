@@ -303,7 +303,8 @@ $(document).ready(function() {
 
         //clear the answers list for new file upload and store details
         answersList.innerHTML = ''
-        storeDetails.innerHTML = 'Store name - 1245'
+        // display default store details
+        displayStoreDetails()
 
         //hide missed section as well
         hideEl(missedSection)
