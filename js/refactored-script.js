@@ -185,6 +185,9 @@ $(document).ready(function() {
             }    
         }
     },
+
+    minNumberDays: 7,
+    maxNumberDays: 28,
 }
 
     // Object with error messages
@@ -216,7 +219,7 @@ $(document).ready(function() {
          globalTaskName = task;
 
         //  TODO: We can add typeOfRoutine to object as one of the keys
-        //if selected tasks is one of the YesNo qestions, it will return typeOfRoutine = question, otherwise it will be a task
+        //if selected tasks is one of the YesNo questions, it will return typeOfRoutine = question, otherwise it will be a task
         if (task[0] === 'q') {
             typeOfRoutine = 'question'
         } else {
@@ -399,80 +402,97 @@ $(document).ready(function() {
         let text;    // this is variable holding text (if any) for given question 
         let shiftDate;  //shift date
         let convertedDate;  // date after conversion from Excel to JS
+        let firstDateOnSpreadsheet; // first date in the Excel spreadsheet
         let countIncorrect = 0; //this is variable to count incorrect values with no actions
         let newLi; // this is variable which will hold new <li>
         
         // reset it to ZERO, ensuring each task start with "clean sheet"
         countMissedTask = 0;
 
-        console.log(`My question is Yes-No answer?: ${isYesNo}`)
+        // get the first date in spreadsheet and then convert it to JS date format
+        firstDateOnSpreadsheet = obj[0]['Shift Date']
+        firstDateOnSpreadsheet = excelDateToJSDate(firstDateOnSpreadsheet)
+
 
         //counting how many times this particular routine has been completed
         for(let i = 0; i < obj.length; i++) {
 
             let currQuestionName = obj[i]['Question Name']
             let doesInclude = currQuestionName.includes(routineName)
+
+            // this will get date of current shift date and convert it to JS date format
+            let currentShiftDate = obj[i]['Shift Date']
+            currentShiftDate = excelDateToJSDate(currentShiftDate)
+
+            // calculate days difference between first date on the spreadsheet (most current one) with date on currentShiftDate date at i counter
+            let daysDifference = calcNumberOfDays(firstDateOnSpreadsheet, currentShiftDate)
+
             // if(obj[i]['Question Name'] === routineName) { 
             if(doesInclude) {
-                answer = obj[i]['Question Answer']
-                text = obj[i]['Question Text']
-                if(!text) text = "No"
-                shiftDate = obj[i]['Shift Date']
-                convertedDate = excelDateToJSDate(shiftDate)
 
-                // check if we have UNDEFINED answer. If we have, it will return Missed check, otherwise it will returned entered value
-                if(isYesNo === true) {
-                    // TODO: Do something when it is TRUE for YesNo answers question
-                    // This need to be re-factored
-                    if(answer === 'Yes') {
-                        count++
+                // it will only count task for defined number of days
+                if(daysDifference < questionsObj.minNumberDays) {
+                    answer = obj[i]['Question Answer']
+                    text = obj[i]['Question Text']
+                    console.log(`Days difference is: ${daysDifference}`)
+                    if(!text) text = "No"
+                        shiftDate = obj[i]['Shift Date']
+                        convertedDate = excelDateToJSDate(shiftDate)
 
-                        newLi = document.createElement('li')
+                        // check if we have UNDEFINED answer. If we have, it will return Missed check, otherwise it will returned entered value
+                        if(isYesNo === true) {
+                            // TODO: Do something when it is TRUE for YesNo answers question
+                             // This need to be re-factored
+                                if(answer === 'Yes') {
+                                     count++
 
-                        // checking if store is entering correct value, base on its limit
-                        const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
+                                    newLi = document.createElement('li')
+
+                                    // checking if store is entering correct value, base on its limit
+                                    const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
                     
-                        newLi.innerHTML = `<span class="answer answer--text">${count}. Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Name recorded?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
+                                    newLi.innerHTML = `<span class="answer answer--text">${count}. Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Name recorded?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
                     
-                        if (text === 'No') {
-                            newLi.classList.add('incorrect-value')
+                                    if (text === 'No') {
+                                         newLi.classList.add('incorrect-value')
+                                        // count incorrect answers without an action
+                                        if(text === 'No') countIncorrect++
+                                    }
+
+                                // if user missed the answer or entered incorrect one, highlight it
+                                if(answer === answerToEmptyString) {
+                                 newLi.classList.add('incorrect-value')
+                                }
+
+                                     answersList.appendChild(newLi)
+                                }
+                        } else {
+                            answer = checkIfUndefinedAnswer(answer)
+
+                            count++
+                            console.log(`${count}: date: ${convertedDate}, answer: ${answer}`)
+                            newLi = document.createElement('li')
+
+                             // checking if store is entering correct value, base on its limit
+                            const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
+                
+                            newLi.innerHTML = `<span class="answer answer--text">${count}.  Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
+                
+                            if (validValue === 'incorrect') {
+                                newLi.classList.add('incorrect-value')
                             // count incorrect answers without an action
-                            if(text === 'No') countIncorrect++
+                                if(text === 'No') countIncorrect++
+                            }
+
+                            // if user missed the answer or entered incorrect one, highlight it
+                            if(answer === answerToEmptyString) {
+                                newLi.classList.add('incorrect-value')
+                            }
+
+                            answersList.appendChild(newLi)
                         }
-
-                        // if user missed the answer or entered incorrect one, highlight it
-                        if(answer === answerToEmptyString) {
-                            newLi.classList.add('incorrect-value')
-                        }
-
-                        answersList.appendChild(newLi)
-                    }
-                } else {
-                    answer = checkIfUndefinedAnswer(answer)
-
-                    count++
-                    console.log(`${count}: date: ${convertedDate}, answer: ${answer}`)
-                    newLi = document.createElement('li')
-
-                    // checking if store is entering correct value, base on its limit
-                    const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
                 
-                    newLi.innerHTML = `<span class="answer answer--text">${count}.  Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
-                
-                    if (validValue === 'incorrect') {
-                        newLi.classList.add('incorrect-value')
-                        // count incorrect answers without an action
-                        if(text === 'No') countIncorrect++
-                    }
-
-                    // if user missed the answer or entered incorrect one, highlight it
-                    if(answer === answerToEmptyString) {
-                        newLi.classList.add('incorrect-value')
-                     }
-
-                    answersList.appendChild(newLi)
                 }
-                
                 
             }
         }
@@ -804,6 +824,21 @@ $(document).ready(function() {
         }, delayTime)
 
         loaderEl.style.display = 'block'
+    }
+
+    const calcNumberOfDays = (dateStart, dateFinish) => {
+        // To set two dates to two variables
+        // first date would be a first date on the spreadsheet, and it will be the most current one 
+        const firstDate = new Date(dateStart);
+        const currentDate = new Date(dateFinish);
+      
+        // To calculate the time difference of two dates
+        const difference_In_Time = firstDate.getTime() - currentDate.getTime();
+      
+        // To calculate the no. of days between two dates
+        const difference_In_Days = difference_In_Time / (1000 * 3600 * 24);
+
+        return difference_In_Days
     }
 
 });
