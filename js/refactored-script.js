@@ -55,6 +55,15 @@ $(document).ready(function() {
     // this variable will hold name of selected task globally
     let globalTaskName = '';
 
+    // first date in the Excel spreadsheet - is will be most current date
+    let firstDateOnSpreadsheet; 
+
+    // current shift date in the Excel spreadsheet - is will be date at current index in the loop
+    let currentShiftDate;
+
+    // difference between two dates. This is to help determine how many days we check each task
+    let daysDifference = 0
+
     // setting max number of characters we want to display for each question
     const strCount = 80;
 
@@ -402,7 +411,6 @@ $(document).ready(function() {
         let text;    // this is variable holding text (if any) for given question 
         let shiftDate;  //shift date
         let convertedDate;  // date after conversion from Excel to JS
-        let firstDateOnSpreadsheet; // first date in the Excel spreadsheet
         let countIncorrect = 0; //this is variable to count incorrect values with no actions
         let newLi; // this is variable which will hold new <li>
         
@@ -410,9 +418,8 @@ $(document).ready(function() {
         countMissedTask = 0;
 
         // get the first date in spreadsheet and then convert it to JS date format
-        firstDateOnSpreadsheet = obj[0]['Shift Date']
-        firstDateOnSpreadsheet = excelDateToJSDate(firstDateOnSpreadsheet)
-
+        firstDateOnSpreadsheet = getDate(obj)
+        
 
         //counting how many times this particular routine has been completed
         for(let i = 0; i < obj.length; i++) {
@@ -421,16 +428,15 @@ $(document).ready(function() {
             let doesInclude = currQuestionName.includes(routineName)
 
             // this will get date of current shift date and convert it to JS date format
-            let currentShiftDate = obj[i]['Shift Date']
-            currentShiftDate = excelDateToJSDate(currentShiftDate)
+            currentShiftDate = getDate(obj, i)
 
             // calculate days difference between first date on the spreadsheet (most current one) with date on currentShiftDate date at i counter
-            let daysDifference = calcNumberOfDays(firstDateOnSpreadsheet, currentShiftDate)
+            daysDifference = calcNumberOfDays(firstDateOnSpreadsheet, currentShiftDate)
 
             // if(obj[i]['Question Name'] === routineName) { 
             if(doesInclude) {
 
-                // it will only count task for defined number of days
+                // it will only count task for defined number of days - minNumberDays in this function
                 if(daysDifference < questionsObj.minNumberDays) {
                     answer = obj[i]['Question Answer']
                     text = obj[i]['Question Text']
@@ -525,35 +531,53 @@ $(document).ready(function() {
         let missedPercent = 0; //variable to hold % of missed tasks
         let questionName = '';  //This variable will hold name of current task
         let questionAnswer = '';  //This variable will hold answer given in Hutbot
+
+
+         // get the first date in spreadsheet and then convert it to JS date format
+         firstDateOnSpreadsheet = getDate(obj)
+
         //loop counting number of tasks
         for(let i = 0; i < obj.length; i++) {
+
+            // this will get date of current shift date and convert it to JS date format
+            currentShiftDate = getDate(obj, i)
+
+            // calculate days difference between first date on the spreadsheet (most current one) with date on currentShiftDate date at i counter
+            daysDifference = calcNumberOfDays(firstDateOnSpreadsheet, currentShiftDate)
+
             if(obj[i]['Tab Name'] === taskName) {
-                //counting total number of tasks
-                countTotal++
-                if(obj[i]['Routine Status'] === 'MISSED') {
-                    //counting number of missed ones
-                    countMissed++
+
+                // check if it is within max numbers of days we check this routine for 
+                if(daysDifference < questionsObj.maxNumberDays) {
+                    //counting total number of tasks
+                    countTotal++
+                    if(obj[i]['Routine Status'] === 'MISSED') {
+                        //counting number of missed ones
+                        countMissed++
                     
-                }
-                questionName = obj[i]['Question Name']
-                // trim the question to limited number of characters
-                questionName = trimString(questionName, strCount)
+                    }
 
-                questionAnswer = obj[i]['Question Answer']
+                    questionName = obj[i]['Question Name']
+                    // trim the question to limited number of characters
+                    questionName = trimString(questionName, strCount)
 
-                // check if we have UNDEFINED answer. If we have, it will return Missed check, otherwise it will returned entered value
-                questionAnswer = checkIfUndefinedAnswer(questionAnswer)
+                    questionAnswer = obj[i]['Question Answer']
 
-                // Adding new <li> element into DOM
-                const newLi = document.createElement('li')
-                newLi.innerHTML = `<span class="answer-text">${questionName} </span><span class="answer">${questionAnswer}<i class="bx bx-edit edit-icon" id="${i}"></i></span>`
+                    // check if we have UNDEFINED answer. If we have, it will return Missed check, otherwise it will returned entered value
+                    questionAnswer = checkIfUndefinedAnswer(questionAnswer)
+
+                    // Adding new <li> element into DOM
+                    const newLi = document.createElement('li')
+                    newLi.innerHTML = `<span class="answer-text">${questionName} </span><span class="answer">${questionAnswer}<i class="bx bx-edit edit-icon" id="${i}"></i></span>`
                
-                 // if user missed the answer or entered incorrect one, highlight it
-                 if(questionAnswer === answerToEmptyString) {
-                    newLi.classList.add('incorrect-value')
-                }
+                    // if user missed the answer or entered incorrect one, highlight it
+                    if(questionAnswer === answerToEmptyString) {
+                        newLi.classList.add('incorrect-value')
+                    }
 
-                answersList.appendChild(newLi)
+                    answersList.appendChild(newLi)
+                }
+                
             }
 
         }
@@ -840,5 +864,13 @@ $(document).ready(function() {
 
         return difference_In_Days
     }
+
+    // function to get the first date in spreadsheet and then convert it to JS date format
+    const getDate = (obj, i = 0) =>  {
+        let myDate = obj[i]['Shift Date']
+        myDate = excelDateToJSDate(myDate)
+        return myDate
+    }
+    
 
 });
