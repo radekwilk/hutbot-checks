@@ -40,8 +40,9 @@ $(document).ready(function() {
         storeNumber: ''
     }
 
-    // this variable is to store VALUE of the limit for given task
+    // this variables is to store VALUE of the limit for given task
     let enteredValueLimit;
+    let enteredMinTempValue;
 
     // it is variable to hold value if answer to question is Yes
     let isYesAnswer = false;
@@ -82,6 +83,7 @@ $(document).ready(function() {
     q1: {
         q: "Check the temperature of hot water at a non-handwash sink.",
         limit: 49,
+        minTemp: '',
         shortStr: 'Hot water temp check',
         type: 'hot',
         isYesNoQuestion: false,
@@ -99,7 +101,8 @@ $(document).ready(function() {
     },
     q2: {
         q: "Record the temperature of the walk-in Freezer.",
-        limit: -15,
+        limit: -13,
+        minTemp: -23,
         shortStr: 'walk-in-freezer temp check',
         type: 'cold',
         isYesNoQuestion: false,
@@ -118,6 +121,7 @@ $(document).ready(function() {
     q3: {
         q: "Record the temperature of the walk-in fridge.",
         limit: 5,
+        minTemp: 0,
         shortStr: 'walk-in-fridge temp check',
         type: 'cold',
         isYesNoQuestion: false,
@@ -159,7 +163,8 @@ $(document).ready(function() {
     },
     q6: {
         q: "Record the temperature of the Freezer.",
-        limit: -15,
+        limit: -13,
+        minTemp: -23,
         shortStr: 'Freezers temp check',
         type: 'cold',
         isYesNoQuestion: false,
@@ -179,6 +184,7 @@ $(document).ready(function() {
     q7: {
         q: "Record the temperature of the fridge.",
         limit: 5,
+        minTemp: 0,
         shortStr: 'Fridges temp check',
         type: 'cold',
         isYesNoQuestion: false,
@@ -198,6 +204,7 @@ $(document).ready(function() {
     q8: {
         q: "Upon receiving the stock order delivery, check and record the fresh product temperatures using a calibrated thermometer",
         limit: 5,
+        minTemp: 0,
         shortStr: 'delivery checks for fresh product',
         type: 'cold',
         isYesNoQuestion: false,
@@ -217,6 +224,7 @@ $(document).ready(function() {
     q9: {
         q: "Upon receiving the stock order delivery, check and record the frozen product temperatures using a calibrated thermometer",
         limit: -13,
+        minTemp: -23,
         shortStr: 'delivery checks for frozen product',
         type: 'cold',
         isYesNoQuestion: false,
@@ -244,7 +252,8 @@ $(document).ready(function() {
         delateTab: "Please delate Report sheet in selected Excel file. It's causing issues with data download.",
         missingTabs: "Something went wrong. Please ensure you are checking valid Hutbot file.",
         noRecords: 'Could not find any records for this question',
-        noDelivery: 'There is not delivery check completed in last 7 days',
+        noDeliveryFresh: 'In last 7 days checked, there is no record of temp check for delivery of fresh products',
+        noDeliveryFrozen: 'In last 7 days checked, there is no record of temp check for delivery of frozen products',
     }
 
     //Listening for click on the 'GET INFO' button
@@ -278,11 +287,16 @@ $(document).ready(function() {
         // const selectedQuestion = convertQuestion(task).question
         const selectedQuestion = convertQuestion(task).q
        
-        //find out is there is any limit assigned to it
+        //find out is there is any limit and minimum temp assigned to it
         enteredValueLimit = convertQuestion(task).limit
+        enteredMinTempValue = convertQuestion(task).minTemp
+
+        console.log(`limit: ${enteredValueLimit}`)
+        console.log(`Min temp: ${enteredMinTempValue}`)
         
         //find out if there is any limit type assigned to it
         typeOfTheLimit = convertQuestion(task).type
+        console.log(`Type of the limit: ${typeOfTheLimit}`)
 
         //find out if answer to question is Yes or No
         isYesAnswer = convertQuestion(task).isYesNoQuestion
@@ -327,9 +341,16 @@ $(document).ready(function() {
 
                     // TODO: Change hard coded q8 and q9 to something more dynamic
                     //when selected question is about fresh or frozen delivery, display this message
-                    if(task === 'q8' || task === 'q9') {
-                        // if delivery checks not completed, it will display error message
-                        displayError(errorDisplay, errorsMsg.noDelivery)
+                    if(task === 'q8') {
+                        // if delivery checks for fresh products is not completed, it will display error message
+                        displayError(errorDisplay, errorsMsg.noDeliveryFresh)
+                        helpingACETextDeliveries(errorsMsg.noDeliveryFresh)
+                        showEl(helpSection)
+                    } else if(task === 'q9') {
+                        // if delivery checks for frozen products is not completed, it will display error message
+                        displayError(errorDisplay, errorsMsg.noDeliveryFrozen)
+                        helpingACETextDeliveries(errorsMsg.noDeliveryFrozen)
+                        showEl(helpSection)
                     } else {
                         // if file is not selected, it will display error message
                         displayError(errorDisplay, errorsMsg.noRecords)
@@ -503,7 +524,8 @@ $(document).ready(function() {
                                     newLi = document.createElement('li')
 
                                     // checking if store is entering correct value, base on its limit
-                                    const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
+                                    const validValue =  checkLimit(answer, enteredValueLimit, enteredMinTempValue, typeOfTheLimit)
+                                    console.log(`Type of the limit second check: ${typeOfTheLimit}`)
                     
                                     newLi.innerHTML = `<span class="answer answer--text">${count}. Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Name recorded?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
                     
@@ -528,7 +550,8 @@ $(document).ready(function() {
                             newLi = document.createElement('li')
 
                              // checking if store is entering correct value, base on its limit
-                            const validValue =  checkLimit(answer,enteredValueLimit, typeOfTheLimit)
+                            const validValue =  checkLimit(answer,enteredValueLimit, enteredMinTempValue, typeOfTheLimit)
+                            console.log(validValue)
                 
                             newLi.innerHTML = `<span class="answer answer--text">${count}.  Routine completed on: ${convertedDate}</span><div class="answer-wrapper"><span class="answer answer--value">${answer},</span><span class="answer answer--value"> Action taken?   ${text}<i class="bx bx-edit edit-icon" id="${i}"></i></span></div>`
                 
@@ -735,7 +758,7 @@ $(document).ready(function() {
     }
 
     // function which check if entered value is below required limit
-    const checkLimit = (currentVal, limitVal,limitType) => {
+    const checkLimit = (currentVal, limitVal,minVal,limitType) => {
         currentVal = Number(currentVal)
         // currentVal = Math.abs(currentVal)
         // limitVal = Math.abs(limitVal)
@@ -746,13 +769,15 @@ $(document).ready(function() {
                 return 'correct'
             }
         } else if(limitType === 'cold') {
-            if(currentVal > limitVal) {
-                console.log(currentVal, limitVal, limitType)
+            if(currentVal > limitVal || currentVal < minVal) {
+                console.log(`Current value: ${currentVal}, limit: ${limitVal}, Min temp: ${minVal}, Limit type:  ${limitType}`)
                 return 'incorrect'
             } else {
+               
                 return 'correct'
             }
         } else {
+            console.log(`Current value: ${currentVal}, limit: ${limitVal}, Min temp: ${minVal}, Limit type:  ${limitType}`)
             return 'correct'
         }
     }
@@ -861,6 +886,10 @@ $(document).ready(function() {
         } else {
             helpText.innerText = 'All good for this one'
         }
+    }
+
+    const helpingACETextDeliveries = (str) => {
+        helpText.innerText = str
     }
 
     // function to deal with undefined answer
