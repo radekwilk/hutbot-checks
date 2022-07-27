@@ -195,6 +195,44 @@ $(document).ready(function() {
         }
     },
 
+    q8: {
+        q: "Upon receiving the stock order delivery, check and record the fresh product temperatures using a calibrated thermometer",
+        limit: 5,
+        shortStr: 'delivery checks for fresh product',
+        type: 'cold',
+        isYesNoQuestion: false,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+            if(this.missed < 1) {
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded for ${this.shortStr}`
+            } else if(this.incorrect < 1) {
+                return `There are ${this.missed} temps missed with no corrective action recorded for ${this.shortStr}`
+            } else {
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded for ${this.shortStr}`
+            }    
+        }
+    },
+
+    q9: {
+        q: "Upon receiving the stock order delivery, check and record the frozen product temperatures using a calibrated thermometer",
+        limit: -13,
+        shortStr: 'delivery checks for frozen product',
+        type: 'cold',
+        isYesNoQuestion: false,
+        missed: 0,
+        incorrect: 0,
+        helpingACEText: function() {
+            if(this.missed < 1) {
+                return `There are ${this.incorrect} temps entered which fall outside the range with no corrective action recorded for ${this.shortStr}`
+            } else if(this.incorrect < 1) {
+                return `There are ${this.missed} temps missed with no corrective action recorded for ${this.shortStr}`
+            } else {
+                return `There are ${this.missed} temps missed and ${this.incorrect} fall outside range with no corrective action recorded for ${this.shortStr}`
+            }    
+        }
+    },
+
     minNumberDays: 7,
     maxNumberDays: 28,
 }
@@ -206,6 +244,7 @@ $(document).ready(function() {
         delateTab: "Please delate Report sheet in selected Excel file. It's causing issues with data download.",
         missingTabs: "Something went wrong. Please ensure you are checking valid Hutbot file.",
         noRecords: 'Could not find any records for this question',
+        noDelivery: 'There is not delivery check completed in last 7 days',
     }
 
     //Listening for click on the 'GET INFO' button
@@ -285,8 +324,17 @@ $(document).ready(function() {
 
                 // if there is not record, display error message, otherwise display fetched information
                 if(taskCount === 0) {
-                     // if file is not selected, it will display error message
-                     displayError(errorDisplay, errorsMsg.noRecords)
+
+                    // TODO: Change hard coded q8 and q9 to something more dynamic
+                    //when selected question is about fresh or frozen delivery, display this message
+                    if(task === 'q8' || task === 'q9') {
+                        // if delivery checks not completed, it will display error message
+                        displayError(errorDisplay, errorsMsg.noDelivery)
+                    } else {
+                        // if file is not selected, it will display error message
+                        displayError(errorDisplay, errorsMsg.noRecords)
+                    }
+                     
                 } else {
                     console.log('We are in questions part')
                     console.log(`Number of ${task} task is ${taskCount}` )
@@ -488,6 +536,7 @@ $(document).ready(function() {
                                 newLi.classList.add('incorrect-value')
                             // count incorrect answers without an action
                                 if(text === 'No') countIncorrect++
+                                
                             }
 
                             // if user missed the answer or entered incorrect one, highlight it
@@ -510,6 +559,7 @@ $(document).ready(function() {
         questionsObj[globalTaskName].missed = countMissedTask
 
         console.log(`print missed tasks in object: ${questionsObj[globalTaskName].missed }, variable: ${countMissedTask}`)
+        console.log(`print incorrect tasks in object: ${questionsObj[globalTaskName].incorrect }, variable: ${countIncorrect}`)
 
         //run the helpingACEText() method to get correct help text
         const ACEText = questionsObj[globalTaskName].helpingACEText()
@@ -612,6 +662,10 @@ $(document).ready(function() {
                 return questionsObj.q6
             case 'q7':
                 return questionsObj.q7
+            case 'q8':
+                return questionsObj.q8
+            case 'q9':
+                return questionsObj.q9
             default:
                 return {
                     q: questionVal,
