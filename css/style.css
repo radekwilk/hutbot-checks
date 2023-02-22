@@ -107,6 +107,7 @@ font-family: 'Roboto', sans-serif;
   font-size: 2.8rem;
   color: rgba(227, 42, 51, 0.9);
   margin-right: 2rem;
+  margin-left: 1rem;
 }
 
 /* SECTIONS STYLING */
@@ -531,4 +532,65 @@ select {
 .loader-container img {
   width: 16rem;
   height: 12rem;
+}
+
+
+/* RESPONSIVE DESIGN */
+
+/* styling of file select field */
+@media only screen and (max-width: 1000px) {
+    
+  .heading--1 {
+    font-size: 3.5rem;
+    font-weight: 600;
+  }
+  
+  .heading--2 {
+    font-size: 2.8rem;
+  }
+  
+  .input-wrapper {
+      width: 80%;
+      margin-bottom: 3.5rem;
+    }
+
+    /* Styling of Store details info display */
+    .store-details {
+      width: 60%;
+      margin: 1.5rem auto;
+      padding: 1rem 2rem;
+      font-size: 2.2rem;
+    }
+
+    /* select-wrapper */
+    .select-wrapper {
+      width: 100%;
+      margin: 0 auto;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+     }
+
+     /* Styling select option field */
+     .taskSelections {
+      width: 75%;
+      margin-right: 0;
+      margin-bottom: 2rem;
+      font-size: 2.6rem;
+      padding: 0.5rem 0.8rem;
+    }
+
+    /* Styling of error message */
+    .error-msg {
+      padding: 0.6rem 1rem;
+      font-size: 1.8rem;
+      margin: 2rem 0;
+    }
+
+    /* Modal */
+    .modal-content {
+      width: 95%;
+      padding: 1rem 0.5rem;
+    }
+    
 }
