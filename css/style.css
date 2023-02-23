@@ -594,3 +594,11 @@ select {
     }
     
 }
+
+
+@media only screen and (max-width: 650px) {
+  /* Styling select option field */
+  .taskSelections {
+    width: 100%;
+  }
+}

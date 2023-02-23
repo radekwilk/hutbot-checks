@@ -66,7 +66,16 @@ $(document).ready(function() {
     let daysDifference = 0
 
     // setting max number of characters we want to display for each question
-    const strCount = 80;
+    let screen_w = window.innerWidth;
+    let strCount = 80; // 80 would be default value
+
+    if (screen_w >= 1200) {
+        strCount = 80;
+    } else if (screen_w > 600 && screen_w < 1200) {
+        strCount = 40;
+    } else {
+        strCount = 20;
+    }
 
     // string replacing undefined or empty string as answer to question
     const answerToEmptyString = 'Check missed'
