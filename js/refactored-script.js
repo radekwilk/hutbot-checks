@@ -90,7 +90,7 @@ $(document).ready(function() {
    const questionsObj = {
 
     q1: {
-        q: "Check the temperature of hot water at a non-handwash sink.",
+        q: "Check the temperature of hot water at a non-handwash sink (should be a minimum of 49⁰C /120⁰F)",
         limit: 49,
         minTemp: '',
         shortStr: 'Hot water temp check',
