@@ -661,7 +661,22 @@ $(document).ready(function () {
           questionName = trimString(questionName, strCount);
 
           // check if we have UNDEFINED answer. If we have, it will return Missed check, otherwise it will returned entered value
-          questionAnswer = checkIfUndefinedAnswer(questionAnswer);
+          if (
+            verifyIfMissing(routineStatus, questionAnswer, questionText) ===
+            "MISSING"
+          ) {
+            questionAnswer = answerToEmptyString;
+          } else {
+            if (
+              checkIfUndefinedAnswer(questionAnswer) === answerToEmptyString &&
+              verifyIfMissing(routineStatus, questionAnswer, questionText) !=
+                "MISSING"
+            ) {
+              questionAnswer = questionText;
+            } else {
+              questionAnswer = checkIfUndefinedAnswer(questionAnswer);
+            }
+          }
 
           // Adding new <li> element into DOM
           const newLi = document.createElement("li");
