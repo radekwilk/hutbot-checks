@@ -75,6 +75,16 @@ $(document).ready(function () {
     strCount = 20;
   }
 
+  // the array of the questions excluded from checking if missing or not (mostly about pizza temp checks in owen)
+  const excludedQuestins = [
+    "If you switch on an oven deck, enter the temperature of the first baked pizza 1",
+    "If you switch on an oven deck, enter the temperature of the first baked pizza 2",
+    "If you switched on an oven during the shift, Record the belt speed for the time it takes a pan to move through the oven cavity. 1",
+    "If you switched on an oven during the shift, Record the temperature of the oven on the controller display 2",
+    "If you switched on an oven during the shift, Record the belt speed for the time it takes a pan to move through the oven cavity. 2",
+    "If you switched on an oven during the shift, Record the temperature of the oven on the controller display 1",
+  ];
+
   // string replacing undefined or empty string as answer to question
   const answerToEmptyString = "Check missed";
 
@@ -647,6 +657,7 @@ $(document).ready(function () {
           console.log(
             `Test data: Answer = ${questionAnswer} and text: ${questionText}`
           );
+
           if (
             //this step will verify if the task was missed
             verifyIfMissing(routineStatus, questionAnswer, questionText) ===
@@ -1006,5 +1017,10 @@ $(document).ready(function () {
     ) {
       return "MISSING";
     }
+  };
+
+  // function to check if the question is included in the excluded question table, if it is, it will return FALSE
+  const verifyIfQuestionIsExcluded = (question) => {
+    return excludedQuestins.includes(question);
   };
 });

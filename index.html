@@ -1,160 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hutbot Checks</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <section class="loader-wrapper" id="loader-wrapper">
-        <picture class="loader-container">
-            <img src="img/loading-78.gif" alt="loader gif">
-        </picture>
+      <picture class="loader-container">
+        <img src="img/loading-78.gif" alt="loader gif" />
+      </picture>
     </section>
 
     <!-- Update on 22/Feb/23 - add responsivness -->
     <aside class="varsion-display">1.6.6</aside>
     <!-- Page heading -->
     <header class="header">
-
-        <h1 class="heading heading--1">Upload excel file</h1>
-
+      <h1 class="heading heading--1">Upload excel file</h1>
     </header>
 
     <!-- Select file field -->
     <div class="input-wrapper">
-        <i class="fa-regular fa-folder-open icon"></i>
-        <input type="file" name="file" class="input-field" id="file" accept=".xls, .xlsx, .csv">
-        
+      <i class="fa-regular fa-folder-open icon"></i>
+      <input
+        type="file"
+        name="file"
+        class="input-field"
+        id="file"
+        accept=".xls, .xlsx, .csv"
+      />
     </div>
 
     <!-- Display store detail we are checking Hutbot for -->
-        <p class="store-details store-details--muted">Store name - 1245</p>
-   
-   
-   <!-- Section where user is selecting completed task or question -->
+    <p class="store-details store-details--muted">Store name - 1245</p>
+
+    <!-- Section where user is selecting completed task or question -->
     <section class="section select-section">
-        <h3 class="heading heading--3">Select question or task completed in Hutbot</h3>
-        
-        <div class="select-wrapper">
-            <select name="selectTask" id="questions" class="taskSelections">
-                <option value="null">Select task or question</option>
-                <option value="q1">Hot water temp check</option>
-                <option value="q2">Temp of the walk-in Freezer</option>
-                <option value="q6">Temp of the Freezer</option>
-                <option value="q3">Temp of the walk-in fridge</option>
-                <option value="q7">Temp of the fridge</option>
-                <option value="q8">Delivery check - fresh</option>
-                <option value="q9">Delivery check - frozen</option>
-                <!-- <option value="q4">Fire safety test</option> -->
-                <!-- <option value="q5">Records of hut visitors</option> -->
-                <option value="Food Safety">Food safety checks</option>
-                <option value="Temperature">Temperatures checks</option>
-                <option value="Pest Walk">Pest walk</option>
-                <!-- <option value="Daily Oven Check">Oven Checks</option> -->
-                <option value="Cleaning">Cleaning</option>
-                
-            </select>
-        
-            <button class="btn">Get info</button>
-            
-        </div>
-        <p class="error-msg">Please select excel file first</p>
+      <h3 class="heading heading--3">
+        Select question or task completed in Hutbot
+      </h3>
+
+      <div class="select-wrapper">
+        <select name="selectTask" id="questions" class="taskSelections">
+          <option value="null">Select task or question</option>
+          <option value="q1">Hot water temp check</option>
+          <option value="q2">Temp of the walk-in Freezer</option>
+          <option value="q6">Temp of the Freezer</option>
+          <option value="q3">Temp of the walk-in fridge</option>
+          <option value="q7">Temp of the fridge</option>
+          <option value="q8">Delivery check - fresh</option>
+          <option value="q9">Delivery check - frozen</option>
+          <!-- <option value="q4">Fire safety test</option> -->
+          <!-- <option value="q5">Records of hut visitors</option> -->
+          <!-- <option value="Food Safety">Food safety checks</option> -->
+          <option value="Temperature">Temperatures checks</option>
+          <option value="Pest Walk">Pest walk</option>
+          <!-- <option value="Daily Oven Check">Oven Checks</option> -->
+          <option value="Cleaning">Cleaning</option>
+        </select>
+
+        <button class="btn">Get info</button>
+      </div>
+      <p class="error-msg">Please select excel file first</p>
     </section>
 
     <section class="section content-section">
-        <h2 class="heading heading--2">List of the answers</h2>
+      <h2 class="heading heading--2">List of the answers</h2>
 
-        <!-- Calculation of missed tasks section -->
-        <div class="missed-tasks-section">
-            <span id="count-total" class="missed-items"></span>
-            <span id="count-missed" class="missed-items"></span>
-            <span id="missed-percent" class="missed-items"></span>
-        </div>
+      <!-- Calculation of missed tasks section -->
+      <div class="missed-tasks-section">
+        <span id="count-total" class="missed-items"></span>
+        <span id="count-missed" class="missed-items"></span>
+        <span id="missed-percent" class="missed-items"></span>
+      </div>
 
-        <!-- When needed, this section will be displayed to copy text we can paste into ACE tool -->
-        <aside class="help-section">
-            <button class="copy-text" data-clipboard-action="cut" data-clipboard-target="#help-text">
-                <i class='bx bx-copy'></i>
-                <div id="copy" class="copy-info">Copy</div>
-                <div id="copied" class="copy-info copy-info-copied">Copied!</div>
-            </button>
-    
-            <textarea class="help-text" id="help-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui aliquam, harum beatae, dicta delectus dolores suscipit totam incidunt inventore nulla tenetur sed, exercitationem at eveniet nam fuga ducimus nisi consequuntur.</textarea>
-        </aside>
+      <!-- When needed, this section will be displayed to copy text we can paste into ACE tool -->
+      <aside class="help-section">
+        <button
+          class="copy-text"
+          data-clipboard-action="cut"
+          data-clipboard-target="#help-text"
+        >
+          <i class="bx bx-copy"></i>
+          <div id="copy" class="copy-info">Copy</div>
+          <div id="copied" class="copy-info copy-info-copied">Copied!</div>
+        </button>
 
-        <ul class="answers-list">
+        <textarea class="help-text" id="help-text">
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui aliquam, harum beatae, dicta delectus dolores suscipit totam incidunt inventore nulla tenetur sed, exercitationem at eveniet nam fuga ducimus nisi consequuntur.</textarea
+        >
+      </aside>
 
-        </ul>
-
+      <ul class="answers-list"></ul>
     </section>
 
     <!-- MODALS -->
     <section class="section-modal">
-        <div class="modal-content">
-            <div class="close-modal">&times;</div>
-            <!-- task name -->
-            <div class="modal-task-wrapper">
-                <h3 class="modal-task-name"></h3>
-            </div>
-             <!-- answer to the question -->
-             <div class="modal-task-wrapper">
-                 Answer to the question:
-                <span class="modal-task-answer modal-answer"></span>
-            </div>
-             <!-- task row index -->
-             <div class="modal-task-wrapper">
-                Row index:
-                <span class="modal-row-index modal-answer"></span>
-            </div>
-            <!-- Answer text is filled in? -->
-            <div class="modal-task-wrapper">
-                Question answer text/comments:
-                <span class="modal-text-answer modal-answer"></span>
-            </div>
-            <!-- Task status -->
-            <div class="modal-task-wrapper">
-                Task completion status:
-                <span class="modal-status-answer modal-answer"></span>
-            </div>
-            <!-- Shift name -->
-            <div class="modal-task-wrapper">
-                Shift Name:
-                <span class="modal-shift-name modal-answer"></span>
-            </div>
-            <!-- Date and time when it was completed -->
-            <div class="modal-task-wrapper">
-                Task schedule date:
-                <span class="modal-date-answer modal-answer"></span>
-            </div>
-            <!-- Who completed the task -->
-            <div class="modal-task-wrapper">
-                Shift Lead:
-                <span class="modal-completed-by-answer modal-answer"></span>
-            </div>
+      <div class="modal-content">
+        <div class="close-modal">&times;</div>
+        <!-- task name -->
+        <div class="modal-task-wrapper">
+          <h3 class="modal-task-name"></h3>
         </div>
+        <!-- answer to the question -->
+        <div class="modal-task-wrapper">
+          Answer to the question:
+          <span class="modal-task-answer modal-answer"></span>
+        </div>
+        <!-- task row index -->
+        <div class="modal-task-wrapper">
+          Row index:
+          <span class="modal-row-index modal-answer"></span>
+        </div>
+        <!-- Answer text is filled in? -->
+        <div class="modal-task-wrapper">
+          Question answer text/comments:
+          <span class="modal-text-answer modal-answer"></span>
+        </div>
+        <!-- Task status -->
+        <div class="modal-task-wrapper">
+          Task completion status:
+          <span class="modal-status-answer modal-answer"></span>
+        </div>
+        <!-- Shift name -->
+        <div class="modal-task-wrapper">
+          Shift Name:
+          <span class="modal-shift-name modal-answer"></span>
+        </div>
+        <!-- Date and time when it was completed -->
+        <div class="modal-task-wrapper">
+          Task schedule date:
+          <span class="modal-date-answer modal-answer"></span>
+        </div>
+        <!-- Who completed the task -->
+        <div class="modal-task-wrapper">
+          Shift Lead:
+          <span class="modal-completed-by-answer modal-answer"></span>
+        </div>
+      </div>
     </section>
     <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus quae laboriosam ex eum facilis vero vel ab, odit officiis libero culpa maiores sed molestiae sequi, debitis repellat, commodi quis nam?
     </p> -->
 
     <footer class="footer">
-        <div class="footer-wrapper">
-            <p class="footer-text">Copyright &copy; WilksServices 2023</p>
-        </div>
+      <div class="footer-wrapper">
+        <p class="footer-text">Copyright &copy; WilksServices 2023</p>
+      </div>
     </footer>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="js/xlsx.full.js"></script>
     <!-- <script src="js/script.js"></script> -->
     <script src="js/refactored-script.js"></script>
-</body>
+  </body>
 </html>
