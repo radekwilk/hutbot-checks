@@ -236,7 +236,7 @@ $(document).ready(function () {
     },
 
     q9: {
-      q: "Check quality and perform a temperature check on a frozen product item, record the results. REJECT any product that is above required temperature",
+      q: "Check quality and perform a temperature check on a frozen product item, record the results.  REJECT any product that is above required temperature",
       limit: -13,
       minTemp: -23,
       shortStr: "delivery checks for frozen product",
