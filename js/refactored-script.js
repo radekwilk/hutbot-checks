@@ -505,7 +505,9 @@ $(document).ready(function () {
     //counting how many times this particular routine has been completed
     for (let i = 0; i < obj.length; i++) {
       let currQuestionName = obj[i]["Question Name"];
+      currQuestionName = currQuestionName.replace(/[\r\n]+/g, ' ');
       let doesInclude = currQuestionName.includes(routineName);
+      console.log(`THis is new log, checking the current question name of ${i}: ${currQuestionName}`)
 
       // this will get date of current shift date and convert it to JS date format
       currentShiftDate = getDate(obj, i);
